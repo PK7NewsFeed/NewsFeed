@@ -11,6 +11,12 @@ spring:
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+#  ssl:
+#    key-store: classpath:${SSL_FILE}
+#    key-store-type: PKCS12
+#    key-store-password: ${SSL_PASSWORD}
+#    key-password: ${SSL_PASSWORD}
+
 
   jpa:
     hibernate:
@@ -21,3 +27,14 @@ spring:
         format_sql: true
         use_sql_comments: true
         dialect: org.hibernate.dialect.MySQLDialect
+
+
+springdoc:
+  version: V.0.0.1
+  swagger-ui:
+    path: /swagger.html
+    tags-sorter: alpha
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
