@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 
@@ -13,11 +14,10 @@ import java.time.LocalDateTime;
 @Getter
 @RequiredArgsConstructor
 public class SignUpUserRequestDto {
-
     @NotNull(message = "내용이 비어있습니다.")
     @Email(message = "이메일 형식이 아닙니다.")
     @Pattern(regexp = Const.EMAIL_REGEX, message = "이메일 형식이 아닙니다.")
-    @Size(min = 10, max = 30)
+    @Size(min = 8, max = 30)
     private String email;
 
     @NotNull

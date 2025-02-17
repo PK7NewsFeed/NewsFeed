@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.tomorrowlearncamp.newsfeed.auth.service.temp.UserEntity;
 import xyz.tomorrowlearncamp.newsfeed.auth.service.temp.UserRepository;
-import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponse;
+import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.SignUpUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.global.config.PasswordEncoder;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.DuplicateEmailException;
@@ -47,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public LoginUserResponse login(String email, String password) {
+    public LoginUserResponseDto login(String email, String password) {
 
         if (!userRepository.existsByEmail(email)) { // 없는 사용자
             throw new NotFoundUserException();
@@ -59,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidPasswordException();
         }
 
-        return LoginUserResponse.builder()
+        return LoginUserResponseDto.builder()
                 .id(findUser.getId())
                 .username(findUser.getUsername())
                 .build();
