@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.newsfeed.friend.enumerator;
+package xyz.tomorrowlearncamp.newsfeed.friend.enums;
 
 public enum FriendRequestStatus {
     WAITING,

@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import xyz.tomorrowlearncamp.newsfeed.friend.enumerator.FriendRequestStatus;
-import xyz.tomorrowlearncamp.newsfeed.friend.temp.User;
+import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
+import xyz.tomorrowlearncamp.newsfeed.friend.enums.FriendRequestStatus;
 import xyz.tomorrowlearncamp.newsfeed.global.entity.BaseEntity;
 
 @Getter
@@ -19,16 +19,16 @@ public class Friend extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_user")
-    private User requestUser;
+    private Users requestUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_user")
-    private User receivedUser;
+    @JoinColumn(name = "received_user")
+    private Users receivedUser;
 
     @Setter
     private FriendRequestStatus status;
 
-    public Friend(User requestUser, User receivedUser, FriendRequestStatus status) {
+    public Friend(Users requestUser, Users receivedUser, FriendRequestStatus status) {
         requestUser = requestUser;
         receivedUser = receivedUser;
         this.status = status;
