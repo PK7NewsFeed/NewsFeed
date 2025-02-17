@@ -8,7 +8,7 @@ import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponse;
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.SignUpUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.global.config.PasswordEncoder;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.DuplicateEmailException;
-import xyz.tomorrowlearncamp.newsfeed.global.exception.InvalidPasswordException;
+import xyz.tomorrowlearncamp.newsfeed.global.exception.InvalidPasswordOrEmailException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
 
 @Service
@@ -56,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
         UserEntity findUser = userRepository.findByEmail(email);
 
         if (!passwordEncoder.matches(password, findUser.getPassword())) { // 비밀번호가 다른 경우
-            throw new InvalidPasswordException();
+            throw new InvalidPasswordOrEmailException();
         }
 
         return LoginUserResponse.builder()
