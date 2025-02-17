@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 
 @Getter
 public class ReadUsersResponseDto {
-
     private Long id;
 
     private String username;

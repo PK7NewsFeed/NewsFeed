@@ -17,10 +17,10 @@ public class LoginUserRequestDto {
     @NotNull(message = "내용이 비어있습니다.")
     @Pattern(regexp = Const.EMAIL_REGEX, message = "이메일 형식이 아닙니다.")
     @Size(min = 8, max = 30, message = "길거나 짧습니다.")
-    private String email;
+    private final String email;
 
     @NotNull(message = "내용이 비어있습니다.")
     @Size(min = 8, max = 20, message = "길거나 짧습니다.")
     @Pattern(regexp = Const.PASSWORD_REGEX, message = "메세지 양식을 확인해주세요.")
-    private String password;
+    private final String password;
 }

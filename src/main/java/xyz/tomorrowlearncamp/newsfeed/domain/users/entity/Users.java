@@ -53,6 +53,7 @@ public class Users extends BaseEntity {
     public void updatePassword(String password) {
         this.password = password;
     }
+
     @Builder
     public Users(String email, String password, String username, Gender gender, Timestamp birthDate) {
         this.email = email;
