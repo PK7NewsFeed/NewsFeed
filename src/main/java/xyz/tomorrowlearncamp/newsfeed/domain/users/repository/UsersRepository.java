@@ -6,5 +6,7 @@ import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
 
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
+    boolean existsByEmail(String email);
 
+    Users findByEmail(String email);
 }

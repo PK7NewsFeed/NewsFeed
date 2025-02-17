@@ -30,7 +30,7 @@ public class UsersService {
 
         return new ReadUsersResponseDto(
                 users.getId(),
-                users.getUserName(),
+                users.getUsername(),
                 users.getEmail(),
                 users.getGender(),
                 users.getBirthDate(),
@@ -43,7 +43,7 @@ public class UsersService {
         return usersRepository.findAll().stream()
                 .map(users -> new ReadUsersResponseDto(
                         users.getId(),
-                        users.getUserName(),
+                        users.getUsername(),
                         users.getEmail(),
                         users.getGender(),
                         users.getBirthDate(),
@@ -78,7 +78,7 @@ public class UsersService {
 
         return new UpdateUsersResponseDto(
                 users.getId(),
-                users.getUserName(),
+                users.getUsername(),
                 users.getEmail(),
                 users.getGender(),
                 users.getBirthDate(),

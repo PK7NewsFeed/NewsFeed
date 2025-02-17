@@ -36,7 +36,7 @@ public class AuthController {
             @Validated @RequestBody SignUpUserRequestDto requestDto
     ) {
 
-        SignUpUserResponseDto responseDto = authService.signUp(requestDto.getEmail(), requestDto.getPassword(), requestDto.getUsername());
+        SignUpUserResponseDto responseDto = authService.signUp(requestDto.getEmail(), requestDto.getPassword(), requestDto.getUsername(), requestDto.getGender(), requestDto.getBirthDate());
 
         return ResponseEntity.ok(responseDto);
     }
