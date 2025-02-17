@@ -92,9 +92,9 @@ public class UsersService {
         Users users = usersRepository.findById(id).orElseThrow(NotFoundUserException::new);
 
         // 비밀번호 검증
-        if (!passwordEncoder.matches(users.getPassword(), dto.getOldPassword())) {
+//        if (!passwordEncoder.matches(users.getPassword(), dto.getOldPassword())) {
 //            throw new InvalidPasswordException();
-        }
+//        }
 
         // 새 비밀번호와 비밀번호 확인 검증
         if (!dto.getNewPassword().equals(dto.getNewPasswordCheck())) {
@@ -107,9 +107,9 @@ public class UsersService {
     public void deleteUser(DeleteUsersRequestDto dto, Long id) {
         Users users = usersRepository.findById(id).orElseThrow(NotFoundUserException::new);
 
-        if (users.getPassword() != dto.getPassword()) {
+//        if (!passwordEncoder.matches(users.getPassword(), dto.getPassword())) {
 //            throw new InvalidPasswordException();
-        }
+//        }
 
         usersRepository.deleteById(id);
     }

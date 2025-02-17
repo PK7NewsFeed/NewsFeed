@@ -34,7 +34,7 @@ public class UsersController {
 
     @GetMapping("/myInfo")
     public ResponseEntity<ReadUsersResponseDto> getMyInfo(
-            @SessionAttribute(name = Const.LOGIN_USER, required = false) LoginUserResponse loginUser
+            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponse loginUser
             ) {
         return new ResponseEntity<>(usersService.getUserById(loginUser.getId()), HttpStatus.OK);
     }
@@ -47,7 +47,7 @@ public class UsersController {
     @PatchMapping
     public ResponseEntity<UpdateUsersResponseDto> updateUser(
             @RequestBody UpdateUsersRequestDto dto,
-            @SessionAttribute(name = Const.LOGIN_USER, required = false) LoginUserResponse loginUser
+            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponse loginUser
             ) {
         return new ResponseEntity<>(usersService.updateUser(dto, loginUser.getId()), HttpStatus.OK);
     }
@@ -55,7 +55,7 @@ public class UsersController {
     @PatchMapping("/password")
     public ResponseEntity<Void> updatePassword(
             @RequestBody UpdatePasswordRequestDto dto,
-            @SessionAttribute(name = Const.LOGIN_USER, required = false) LoginUserResponse loginUser
+            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponse loginUser
     ) {
         usersService.updateUserPassword(dto, loginUser.getId());
         return new ResponseEntity<>(HttpStatus.OK);
@@ -64,7 +64,7 @@ public class UsersController {
     @PostMapping("/delete")
     public ResponseEntity<Void> deleteUser(
             @RequestBody DeleteUsersRequestDto dto,
-            @SessionAttribute(name = Const.LOGIN_USER, required = false) LoginUserResponse loginUser,
+            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponse loginUser,
             HttpServletRequest httpServletRequest
     ) {
         // 유저 삭제
