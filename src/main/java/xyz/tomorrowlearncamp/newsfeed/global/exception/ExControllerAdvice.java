@@ -24,8 +24,8 @@ public class ExControllerAdvice {
         return new ResponseEntity<>(ErrorCode.NOT_FOUND_USER, e.getStatusCode());
     }
 
-    @ExceptionHandler(InvalidPasswordException.class)
-    public ResponseEntity<ErrorCode> invalidPasswordExHandle(InvalidPasswordException e) {
+    @ExceptionHandler(InvalidPasswordOrEmailException.class)
+    public ResponseEntity<ErrorCode> invalidPasswordOrEmailExHandle(InvalidPasswordOrEmailException e) {
         return new ResponseEntity<>(ErrorCode.INVALID_EMAIL_PASSWORD, e.getStatusCode());
     }
 
@@ -33,6 +33,17 @@ public class ExControllerAdvice {
     public ResponseEntity<ErrorCode> loginUserExHandle(LoginUserException e) {
         return new ResponseEntity<>(ErrorCode.NOT_LOGIN, e.getStatusCode());
     }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ErrorCode> invalidPasswordExHandleExhandle(InvalidPasswordException e) {
+        return new ResponseEntity<>(ErrorCode.INVALID_PASSWORD, e.getStatusCode());
+    }
+
+    @ExceptionHandler(MismatchPasswordException.class)
+    public ResponseEntity<ErrorCode> mismatchPaswwordException(MismatchPasswordException e) {
+        return new ResponseEntity<>(ErrorCode.MISMATCH_PASSWORD, e.getStatusCode());
+    }
+
 
     // @Validated 에러 출력
     @ExceptionHandler(MethodArgumentNotValidException.class)

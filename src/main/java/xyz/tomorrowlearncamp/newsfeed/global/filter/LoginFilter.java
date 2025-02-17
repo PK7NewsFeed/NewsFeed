@@ -3,7 +3,6 @@ package xyz.tomorrowlearncamp.newsfeed.global.filter;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.util.PatternMatchUtils;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.LoginUserException;
@@ -12,7 +11,10 @@ import java.io.IOException;
 
 public class LoginFilter implements Filter {
 
-    private final static String[] WHILE_LIST = {"/auth/signup", "/auth/login"};
+    private final static String[] WHILE_LIST = {
+            "/auth/signup",
+            "/auth/login",
+    };
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
