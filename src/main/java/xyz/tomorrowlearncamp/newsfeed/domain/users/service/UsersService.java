@@ -8,6 +8,9 @@ import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.ResponseDto.ReadUsersResp
 import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class UsersService {
@@ -28,4 +31,20 @@ public class UsersService {
                 users.getUpdatedAt()
         );
     }
+
+    public List<ReadUsersResponseDto> getUsers() {
+        return usersRepository.findAll().stream()
+                .map(users -> new ReadUsersResponseDto(
+                        users.getId(),
+                        users.getName(),
+                        users.getEmail(),
+                        users.getGender(),
+                        users.getBirthDate(),
+                        users.getCreatedAt(),
+                        users.getUpdatedAt()
+                )
+        ).collect(Collectors.toList());
+    }
+
+
 }

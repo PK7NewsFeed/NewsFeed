@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.ResponseDto.ReadUsersResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.service.UsersService;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -25,5 +27,10 @@ public class UsersController {
     public ResponseEntity<ReadUsersResponseDto> getUserId() {
         Long id = 1L;
         return new ResponseEntity<>(usersService.getUserById(id), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public  ResponseEntity<List<ReadUsersResponseDto>> getUsers() {
+        return new ResponseEntity<>(usersService.getUsers(), HttpStatus.OK);
     }
 }
