@@ -2,7 +2,7 @@ package xyz.tomorrowlearncamp.newsfeed.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponse;
+import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.SignUpUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
@@ -52,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public LoginUserResponse login(String email, String password) {
+    public LoginUserResponseDto login(String email, String password) {
 
         if (!usersRepository.existsByEmail(email)) { // 없는 사용자
             throw new NotFoundUserException();
@@ -64,7 +64,7 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidPasswordOrEmailException();
         }
 
-        return LoginUserResponse.builder()
+        return LoginUserResponseDto.builder()
                 .id(findUser.getId())
                 .username(findUser.getUsername())
                 .build();

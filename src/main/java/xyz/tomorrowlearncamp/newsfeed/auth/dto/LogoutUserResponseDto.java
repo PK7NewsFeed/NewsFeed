@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class LogoutUserResponse {
+public class LogoutUserResponseDto {
 
     private final String message;
 }

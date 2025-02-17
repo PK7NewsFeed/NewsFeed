@@ -2,10 +2,9 @@ package xyz.tomorrowlearncamp.newsfeed.auth.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-public class LoginUserResponse {
+public class LoginUserResponseDto {
 
     private Long id;
 
@@ -14,7 +13,7 @@ public class LoginUserResponse {
 
 
     @Builder
-    public LoginUserResponse(Long id, String username) {
+    public LoginUserResponseDto(Long id, String username) {
         this.id = id;
         this.username = username;
     }
