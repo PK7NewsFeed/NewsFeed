@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.newsfeed.auth.Service.temp;
+package xyz.tomorrowlearncamp.newsfeed.auth.service.temp;
 
 import jakarta.persistence.*;
 import lombok.*;

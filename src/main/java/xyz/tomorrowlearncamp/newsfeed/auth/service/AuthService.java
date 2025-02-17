@@ -1,7 +1,6 @@
-package xyz.tomorrowlearncamp.newsfeed.auth.Service;
+package xyz.tomorrowlearncamp.newsfeed.auth.service;
 
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponse;
-import xyz.tomorrowlearncamp.newsfeed.auth.dto.SignUpUserRequestDto;
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.SignUpUserResponseDto;
 
 public interface AuthService {

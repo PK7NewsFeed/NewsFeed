@@ -1,9 +1,9 @@
-package xyz.tomorrowlearncamp.newsfeed.auth.Service;
+package xyz.tomorrowlearncamp.newsfeed.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import xyz.tomorrowlearncamp.newsfeed.auth.Service.temp.UserEntity;
-import xyz.tomorrowlearncamp.newsfeed.auth.Service.temp.UserRepository;
+import xyz.tomorrowlearncamp.newsfeed.auth.service.temp.UserEntity;
+import xyz.tomorrowlearncamp.newsfeed.auth.service.temp.UserRepository;
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponse;
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.SignUpUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.global.config.PasswordEncoder;

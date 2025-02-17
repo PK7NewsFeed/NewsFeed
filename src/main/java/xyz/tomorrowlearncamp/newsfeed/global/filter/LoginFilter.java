@@ -10,7 +10,6 @@ import xyz.tomorrowlearncamp.newsfeed.global.exception.LoginUserException;
 
 import java.io.IOException;
 
-@Configuration
 public class LoginFilter implements Filter {
 
     private final static String[] WHILE_LIST = {"/auth/signup", "/auth/login"};

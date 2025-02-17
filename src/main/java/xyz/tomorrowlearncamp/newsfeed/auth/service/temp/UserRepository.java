@@ -1,6 +1,7 @@
-package xyz.tomorrowlearncamp.newsfeed.auth.Service.temp;
+package xyz.tomorrowlearncamp.newsfeed.auth.service.temp;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import xyz.tomorrowlearncamp.newsfeed.auth.service.temp.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
