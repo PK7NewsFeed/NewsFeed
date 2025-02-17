@@ -1,7 +1,6 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.users.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.tomorrowlearncamp.newsfeed.global.entity.BaseEntity;
@@ -19,7 +18,7 @@ public class Users extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String userName;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -33,4 +32,24 @@ public class Users extends BaseEntity {
 
     @Column(nullable = false)
     private Timestamp birthDate;
+
+    public void updateUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void updateEmail(String email) {
+        this.email = email;
+    }
+
+    public void updateGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public void updateBirthDate(Timestamp birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
 }

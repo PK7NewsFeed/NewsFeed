@@ -8,8 +8,7 @@ import java.sql.Timestamp;
 
 @Getter
 @AllArgsConstructor
-public class ReadUsersResponseDto {
-
+public class UpdateUsersResponseDto {
     private Long id;
 
     private String userName;
@@ -23,5 +22,4 @@ public class ReadUsersResponseDto {
     private Timestamp createdAt;
 
     private Timestamp updatedAt;
-
 }
