@@ -1,6 +1,9 @@
 package xyz.tomorrowlearncamp.newsfeed.auth.Controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -24,7 +27,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
+    @Operation(summary = "회원가입")
+    @ApiResponse(responseCode = "201", description = "회원가입 성공")
+    @ApiResponse(responseCode = "400", description = "이메일 중복")
+    @ApiResponse(responseCode = "400", description = "입력값 에러")
     public ResponseEntity<SignUpUserResponseDto> signUp(
+            @Parameter(required = true, description = "유저 회원가입 시 필요한 기본 정보")
             @Validated @RequestBody SignUpUserRequestDto requestDto
     ) {
 
@@ -34,7 +42,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @Operation(summary = "로그인")
+    @ApiResponse(responseCode = "200", description = "로그인 성공")
+    @ApiResponse(responseCode = "400", description = "입력값 에러")
+    @ApiResponse(responseCode = "400", description = "이메일 형식 에러")
+    @ApiResponse(responseCode = "401", description = "아이디 및 비밀번호 불일치")
+    @ApiResponse(responseCode = "404", description = "없는 사용자")
     public ResponseEntity<LoginUserResponse> login(
+            @Parameter(required = true, description = "로그인 시 필요한 email, password")
             @Validated @RequestBody LoginUserRequest requestDto,
             HttpServletRequest httpServletRequest
     ) {
@@ -49,6 +64,9 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
+    @Operation(summary = "로그아웃")
+    @ApiResponse(responseCode = "200", description = "로그아웃 성공")
+    @ApiResponse(responseCode = "400", description = "로그아웃된 사용자")
     public ResponseEntity<LogoutUserResponse> logout(
             HttpServletRequest httpServletRequest
     ) {
