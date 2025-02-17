@@ -28,15 +28,15 @@ public class UsersService {
     public ReadUsersResponseDto getUserById(Long userId) {
         Users users = usersRepository.findById(userId).orElseThrow(NotFoundUserException::new);
 
-        return new ReadUsersResponseDto(
-                users.getId(),
-                users.getUsername(),
-                users.getEmail(),
-                users.getGender(),
-                users.getBirthDate(),
-                users.getCreatedAt(),
-                users.getUpdatedAt()
-        );
+        return ReadUsersResponseDto.builder()
+                .id(users.getId())
+                .email(users.getEmail())
+                .username(users.getUsername())
+                .gender(users.getGender())
+                .birthDate(users.getBirthDate())
+                .createdAt(users.getCreatedAt())
+                .updatedAt(users.getUpdatedAt())
+                .build();
     }
 
     public List<ReadUsersResponseDto> getUsers() {
@@ -59,12 +59,12 @@ public class UsersService {
         Users users = usersRepository.findById(id).orElseThrow(NotFoundUserException::new);
 
         // 비밀번호 검증
-        if (!passwordEncoder.matches(users.getPassword(), dto.getPassword())) {
-//            throw new InvalidPasswordException();
+        if (!passwordEncoder.matches(dto.getPassword(), users.getPassword())) {
+            throw new InvalidPasswordException();
         }
 
-        if (dto.getUserName() != null && !dto.getUserName().isBlank()) {
-            users.updateUserName(dto.getUserName());
+        if (dto.getUsername() != null && !dto.getUsername().isBlank()) {
+            users.updateUserName(dto.getUsername());
         }
         if (dto.getEmail() != null && !dto.getEmail().isBlank()) {
             users.updateEmail(dto.getEmail());
@@ -76,25 +76,25 @@ public class UsersService {
             users.updateBirthDate(dto.getBirthDate());
         }
 
-        return new UpdateUsersResponseDto(
-                users.getId(),
-                users.getUsername(),
-                users.getEmail(),
-                users.getGender(),
-                users.getBirthDate(),
-                users.getCreatedAt(),
-                users.getUpdatedAt()
-        );
+        return UpdateUsersResponseDto.builder()
+                .id(users.getId())
+                .email(users.getEmail())
+                .username(users.getUsername())
+                .gender(users.getGender())
+                .birthDate(users.getBirthDate())
+                .createdAt(users.getCreatedAt())
+                .updatedAt(users.getUpdatedAt())
+                .build();
     }
 
     @Transactional
     public void updateUserPassword(UpdatePasswordRequestDto dto, Long id) {
         Users users = usersRepository.findById(id).orElseThrow(NotFoundUserException::new);
 
-        // 비밀번호 검증
-//        if (!passwordEncoder.matches(users.getPassword(), dto.getOldPassword())) {
-//            throw new InvalidPasswordException();
-//        }
+//         비밀번호 검증
+        if (!passwordEncoder.matches(dto.getOldPassword(), users.getPassword())) {
+            throw new InvalidPasswordException();
+        }
 
         // 새 비밀번호와 비밀번호 확인 검증
         if (!dto.getNewPassword().equals(dto.getNewPasswordCheck())) {
@@ -107,9 +107,9 @@ public class UsersService {
     public void deleteUser(DeleteUsersRequestDto dto, Long id) {
         Users users = usersRepository.findById(id).orElseThrow(NotFoundUserException::new);
 
-//        if (!passwordEncoder.matches(users.getPassword(), dto.getPassword())) {
-//            throw new InvalidPasswordException();
-//        }
+        if (!passwordEncoder.matches(dto.getPassword(), users.getPassword())) {
+            throw new InvalidPasswordException();
+        }
 
         usersRepository.deleteById(id);
     }

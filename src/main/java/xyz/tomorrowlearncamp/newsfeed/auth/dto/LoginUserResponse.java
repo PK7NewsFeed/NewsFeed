@@ -11,6 +11,8 @@ public class LoginUserResponse {
 
     private String username;
 
+
+
     @Builder
     public LoginUserResponse(Long id, String username) {
         this.id = id;
