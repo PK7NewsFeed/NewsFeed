@@ -16,9 +16,7 @@ import java.sql.Timestamp;
 
 @Service
 @RequiredArgsConstructor
-public class
-
-AuthServiceImpl implements AuthService {
+public class AuthServiceImpl implements AuthService {
 
     private final UsersRepository usersRepository;
 
