@@ -5,19 +5,21 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import xyz.tomorrowlearncamp.newsfeed.global.enums.Gender;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
 @RequiredArgsConstructor
 public class SignUpUserRequestDto {
-
     @NotNull(message = "내용이 비어있습니다.")
     @Email(message = "이메일 형식이 아닙니다.")
     @Pattern(regexp = Const.EMAIL_REGEX, message = "이메일 형식이 아닙니다.")
-    @Size(min = 10, max = 30)
+    @Size(min = 8, max = 30)
     private String email;
 
     @NotNull
@@ -28,4 +30,10 @@ public class SignUpUserRequestDto {
     @NotNull
     @Size(min = 1, max = 10)
     private String username;
+
+    @NotNull(message = "성별을 선택해주세요.")
+    private Gender gender;
+
+    @NotNull(message = "태어난 날짜를 선택해주세요.")
+    private Timestamp birthDate;
 }
