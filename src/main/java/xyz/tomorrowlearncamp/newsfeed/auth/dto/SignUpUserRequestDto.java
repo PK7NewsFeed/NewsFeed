@@ -7,8 +7,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import xyz.tomorrowlearncamp.newsfeed.global.enums.Gender;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
@@ -28,4 +30,10 @@ public class SignUpUserRequestDto {
     @NotNull
     @Size(min = 1, max = 10)
     private String username;
+
+    @NotNull(message = "성별을 선택해주세요.")
+    private Gender gender;
+
+    @NotNull(message = "태어난 날짜를 선택해주세요.")
+    private Timestamp birthDate;
 }

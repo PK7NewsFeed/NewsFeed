@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 @Getter
 @AllArgsConstructor
 public class UpdateUsersRequestDto {
-    private final String userName;
+    private final String username;
 
     @NotNull(message = "내용이 비어있습니다.")
     @Email(message = "이메일 형식이 아닙니다.")

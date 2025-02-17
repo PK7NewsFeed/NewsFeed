@@ -6,8 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponse;
-import xyz.tomorrowlearncamp.newsfeed.auth.dto.LogoutUserResponse;
+import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.RequestDto.DeleteUsersRequestDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.RequestDto.UpdatePasswordRequestDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.RequestDto.UpdateUsersRequestDto;
@@ -34,7 +33,7 @@ public class UsersController {
 
     @GetMapping("/myInfo")
     public ResponseEntity<ReadUsersResponseDto> getMyInfo(
-            @SessionAttribute(name = Const.LOGIN_USER, required = false) LoginUserResponse loginUser
+            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
             ) {
         return new ResponseEntity<>(usersService.getUserById(loginUser.getId()), HttpStatus.OK);
     }
@@ -47,7 +46,7 @@ public class UsersController {
     @PatchMapping
     public ResponseEntity<UpdateUsersResponseDto> updateUser(
             @RequestBody UpdateUsersRequestDto dto,
-            @SessionAttribute(name = Const.LOGIN_USER, required = false) LoginUserResponse loginUser
+            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
             ) {
         return new ResponseEntity<>(usersService.updateUser(dto, loginUser.getId()), HttpStatus.OK);
     }
@@ -55,7 +54,7 @@ public class UsersController {
     @PatchMapping("/password")
     public ResponseEntity<Void> updatePassword(
             @RequestBody UpdatePasswordRequestDto dto,
-            @SessionAttribute(name = Const.LOGIN_USER, required = false) LoginUserResponse loginUser
+            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
     ) {
         usersService.updateUserPassword(dto, loginUser.getId());
         return new ResponseEntity<>(HttpStatus.OK);
@@ -64,7 +63,7 @@ public class UsersController {
     @PostMapping("/delete")
     public ResponseEntity<Void> deleteUser(
             @RequestBody DeleteUsersRequestDto dto,
-            @SessionAttribute(name = Const.LOGIN_USER, required = false) LoginUserResponse loginUser,
+            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser,
             HttpServletRequest httpServletRequest
     ) {
         // 유저 삭제
