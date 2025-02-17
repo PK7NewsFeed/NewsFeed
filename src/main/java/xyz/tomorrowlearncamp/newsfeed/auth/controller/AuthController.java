@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +39,7 @@ public class AuthController {
 
         SignUpUserResponseDto responseDto = authService.signUp(requestDto.getEmail(), requestDto.getPassword(), requestDto.getUsername(), requestDto.getGender(), requestDto.getBirthDate());
 
-        return ResponseEntity.ok(responseDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
@@ -48,13 +49,13 @@ public class AuthController {
     @ApiResponse(responseCode = "400", description = "이메일 형식 에러")
     @ApiResponse(responseCode = "401", description = "아이디 및 비밀번호 불일치")
     @ApiResponse(responseCode = "404", description = "없는 사용자")
-    public ResponseEntity<LoginUserResponse> login(
+    public ResponseEntity<LoginUserResponseDto> login(
             @Parameter(required = true, description = "로그인 시 필요한 email, password")
-            @Validated @RequestBody LoginUserRequest requestDto,
+            @Validated @RequestBody LoginUserRequestDto requestDto,
             HttpServletRequest httpServletRequest
     ) {
         // 유저 정보 확인
-        LoginUserResponse responseDto = authService.login(requestDto.getEmail(), requestDto.getPassword());
+        LoginUserResponseDto responseDto = authService.login(requestDto.getEmail(), requestDto.getPassword());
 
         // 세션 설정
         HttpSession session = httpServletRequest.getSession();
@@ -67,7 +68,7 @@ public class AuthController {
     @Operation(summary = "로그아웃")
     @ApiResponse(responseCode = "200", description = "로그아웃 성공")
     @ApiResponse(responseCode = "400", description = "로그아웃된 사용자")
-    public ResponseEntity<LogoutUserResponse> logout(
+    public ResponseEntity<LogoutUserResponseDto> logout(
             HttpServletRequest httpServletRequest
     ) {
         // 기존 세션 확인
@@ -77,7 +78,7 @@ public class AuthController {
             session.invalidate(); // 세션 삭제
         }
 
-        LogoutUserResponse responseDto = new LogoutUserResponse("success");
+        LogoutUserResponseDto responseDto = new LogoutUserResponseDto("success");
 
         return ResponseEntity.ok(responseDto);
     }
