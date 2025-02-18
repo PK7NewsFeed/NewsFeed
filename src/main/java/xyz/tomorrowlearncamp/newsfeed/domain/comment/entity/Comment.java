@@ -1,16 +1,17 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.comment.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import xyz.tomorrowlearncamp.newsfeed.domain.comment.dto.CreateCommentRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.comment.dto.CreateCommentResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
+import xyz.tomorrowlearncamp.newsfeed.global.entity.BaseEntity;
 
 @Getter
 @Entity
 @Table(name = "comment")
 @NoArgsConstructor
-public class Comment {
+public class Comment extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,19 +26,21 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_comment_id")
+    @Nullable
     private Comment parentComment;
 
-    @Column
+    @Column(nullable = false)
     private Integer depth;
 
-    @Column
+    @Column(nullable = false)
     private String content;
 
-    public Comment(Users user, NewsFeed newsFeed, Comment parentComment, String content) {
+    public Comment(Users user, NewsFeed newsFeed, @Nullable Comment parentComment, String content, Integer depth) {
         this.user = user;
         this.newsFeed = newsFeed;
         this.parentComment = parentComment;
         this.content = content;
+        this.depth = depth;
     }
 
     public void updateContent(String newContent) {

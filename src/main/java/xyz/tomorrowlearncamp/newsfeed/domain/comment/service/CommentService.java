@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.comment;
+package xyz.tomorrowlearncamp.newsfeed.domain.comment.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +11,9 @@ import xyz.tomorrowlearncamp.newsfeed.domain.comment.dto.ReadCommentResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.dto.UpdateCommentResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.repository.CommentRepository;
+import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
+import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
+import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
 
 import java.util.List;
 
@@ -24,24 +27,29 @@ public class CommentService {
 
 
     public CreateCommentResponseDto create(CreateCommentRequestDto requestDto) {
-        Users user = usersRepository.findById(requestDto.getUserId());
+        Users user = usersRepository.findById(requestDto.getUserId())
+                .orElseThrow(NotFoundUserException::new);
+
         NewsFeed newsFeed = newsFeedRepository.findById(requestDto.getNewsFeedId());
 
+        int depth = 0;
         // parentComment 있는지 확인
         Comment parentComment = null;
         if (requestDto.getParentCommentId() != null) {
-            parentComment = commentRepository.findByIdOrElseThrow(requestDto.getUserId());
-
+            parentComment = commentRepository.findByIdOrElseThrow(requestDto.getParentCommentId());
+            depth = parentComment.getDepth() + 1;
         }
-        Comment comment = new Comment(user, newsFeed, parentComment, requestDto.getContent());
+        Comment comment = new Comment(user, newsFeed, parentComment, requestDto.getContent(), depth);
         commentRepository.save(comment);
         return new CreateCommentResponseDto(comment);
     }
 
     @Transactional(readOnly = true)
     public List<ReadCommentResponseDto> findAll(Long newsFeedId) {
-        List<ReadCommentResponseDto> dtos = newsFeedRepository.findById(newsFeedId);
-        return dtos;
+        List<Comment> comments = commentRepository.findByNewsFeedId(newsFeedId);
+        return comments.stream()
+                .map(ReadCommentResponseDto::toDto)
+                .toList();
     }
 
     @Transactional

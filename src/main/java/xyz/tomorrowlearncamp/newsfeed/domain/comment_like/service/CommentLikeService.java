@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.repository.CommentRepository;
-import xyz.tomorrowlearncamp.newsfeed.domain.comment_like.Entity.CommentLike;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment_like.repository.CommentLikeRepository;
+import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
+import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
+import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
 
 @Service
 @RequiredArgsConstructor
@@ -18,18 +20,15 @@ public class CommentLikeService {
 
     @Transactional
     public boolean toggleLike(Long userId, Long commentId) {
-        Users user = usersRepository.findById(userId);
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(NotFoundUserException::new);
         Comment comment = commentRepository.findByIdOrElseThrow(commentId);
 
         boolean isLiked = commentLikeRepository.existsByCommentAndUser(comment, user);
 
-        if (isLiked) {
-            commentLikeRepository.deleteByCommentAndUser(comment, user);
-            return false;
-        } else {
-            commentLikeRepository.save(new CommentLike(user, comment));
-            return true;
-        }
+        commentLikeRepository.toggle(comment, user);
+
+        return !isLiked;
     }
 
 

@@ -1,5 +1,6 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.comment.dto;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -19,13 +20,14 @@ public class CreateCommentRequestDto {
 
     private final Integer depth;
 
+    @Nullable
     private final Long parentCommentId;
 
-    public CreateCommentRequestDto(String content, Long userId, Long newsFeedId, Integer depth, Long parentCommentId) {
+    public CreateCommentRequestDto(String content, Long userId, Long newsFeedId, Integer depth, @Nullable Long parentCommentId) {
         this.content = content;
         this.userId = userId;
         this.newsFeedId = newsFeedId;
-        this.depth = depth;
+        this.depth = (depth != null) ? depth : 0;
         this.parentCommentId = parentCommentId;
     }
 }
