@@ -9,9 +9,10 @@ import xyz.tomorrowlearncamp.newsfeed.domain.friend.enums.FriendRequestStatus;
 import java.util.List;
 import java.util.Optional;
 
+
 @Repository
 public interface FriendRepository extends JpaRepository<Friend,Long> {
-    Optional<Friend> findByRequestUserAndReceivedUserAndStatus(Users requestUser, Users receivedUser, FriendRequestStatus status);
-    List<Friend> findByReceivedUserAndStatus(Users receivedUser, FriendRequestStatus status);
-    List<Friend> findByRequestUserAndStatus(Users requestUser, FriendRequestStatus status);
+    Optional<Friend> findByRequestUserIdAndReceivedUserIdAndStatus(Long requestUserId, Long receivedUserId, FriendRequestStatus status);
+    List<Friend> findByReceivedUserIdAndStatus(Long receivedUserId, FriendRequestStatus status);
+    List<Friend> findByRequestUserIdAndStatus(Long requestUserId, FriendRequestStatus status);
 }

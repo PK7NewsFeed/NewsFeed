@@ -1,13 +1,13 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.friend.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.tomorrowlearncamp.newsfeed.domain.friend.enums.FriendRequestStatus;
+import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.friend.dto.UserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.service.FriendService;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
+import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 
 import java.util.List;
 
@@ -20,19 +20,19 @@ public class FriendController {
     @PostMapping
     public ResponseEntity<String> addFriend(
             @RequestParam Long userId,
-            HttpServletRequest request
+            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
     ) {
-        Long requestUserId = (Long) request.getAttribute("userId");
+        Long requestUserId = loginUser.getId();
         friendService.sendFriendRequest(requestUserId, userId);
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
     @GetMapping
-    public List<Users> getFriendRequests(
-            @RequestParam FriendRequestStatus status,
-            HttpServletRequest request
+    public List<UserResponseDto> getFriendRequests(
+            @RequestParam String status,
+            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
     ) {
-        Long userId = (Long) request.getAttribute("userId");
-        return friendService.getFriendRequest(userId, status);
+        Long requestUserId = loginUser.getId();
+        return friendService.getFriendRequest(requestUserId, status);
     }
 }

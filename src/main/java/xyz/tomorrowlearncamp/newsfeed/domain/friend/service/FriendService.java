@@ -3,6 +3,7 @@ package xyz.tomorrowlearncamp.newsfeed.domain.friend.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import xyz.tomorrowlearncamp.newsfeed.domain.friend.dto.UserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.entity.Friend;
@@ -28,8 +29,8 @@ public class FriendService {
         Users receivedUser = usersRepository.findById(receivedUserId)
                 .orElseThrow(NotFoundUserException::new);
 
-        Optional<Friend> existingRequest = friendRepository.findByRequestUserAndReceivedUserAndStatus(
-                receivedUser, requestUser, FriendRequestStatus.WAITING
+        Optional<Friend> existingRequest = friendRepository.findByRequestUserIdAndReceivedUserIdAndStatus(
+                receivedUser.getId(), requestUser.getId(), FriendRequestStatus.WAITING
         );
 
         Friend friendRequest;
@@ -38,34 +39,41 @@ public class FriendService {
             friendRequest = existingRequest.get();
             friendRequest.setStatus(FriendRequestStatus.ACCEPTED);
         } else {
-            friendRequest = new Friend(requestUser, receivedUser, FriendRequestStatus.WAITING);
+            friendRequest = new Friend(requestUser.getId(), receivedUser.getId(), FriendRequestStatus.WAITING);
         }
         friendRepository.save(friendRequest);
     }
 
     @Transactional(readOnly = true)
-    public List<Users> getFriendRequest(Long userId, FriendRequestStatus status) {
+    public List<UserResponseDto> getFriendRequest(Long userId, String status) {
         Users user = usersRepository.findById(userId)
                 .orElseThrow(NotFoundUserException::new);
 
-        if(status == FriendRequestStatus.WAITING) {
-            return friendRepository.findByReceivedUserAndStatus(user, status)
+        List<Long> ResponseList = new ArrayList<>();
+
+        if(status.equals("WAITING")) {
+            ResponseList = friendRepository.findByReceivedUserIdAndStatus(user.getId(), FriendRequestStatus.WAITING)
                     .stream()
-                    .map(Friend::getRequestUser)
+                    .map(Friend::getRequestUserId)
                     .toList();
-        } else if (status == FriendRequestStatus.ACCEPTED) {
-            List<Users> receivedUsers = new ArrayList<>(friendRepository.findByRequestUserAndStatus(user, status)
+        } else if (status.equals("ACCEPTED")) {
+            List<Long> receivedUsers = friendRepository.findByRequestUserIdAndStatus(user.getId(), FriendRequestStatus.ACCEPTED)
                     .stream()
-                    .map(Friend::getReceivedUser)
-                    .toList());
-            List<Users> requestUsers = friendRepository.findByReceivedUserAndStatus(user, status)
-                    .stream()
-                    .map(Friend::getRequestUser)
+                    .map(Friend::getReceivedUserId)
                     .toList();
-            receivedUsers.addAll(requestUsers);
-            return receivedUsers;
+            List<Long> requestUsers = friendRepository.findByReceivedUserIdAndStatus(user.getId(), FriendRequestStatus.ACCEPTED)
+                    .stream()
+                    .map(Friend::getRequestUserId)
+                    .toList();
+            ResponseList.addAll(receivedUsers);
+            ResponseList.addAll(requestUsers);
         } else {
             throw new NotFoundUserException();
         }
+
+        List<Users> usersList = usersRepository.findAllById(ResponseList);
+        return usersList.stream()
+                .map(users -> new UserResponseDto(users.getId(), users.getUsername(), users.getEmail()))
+                .toList();
     }
 }
