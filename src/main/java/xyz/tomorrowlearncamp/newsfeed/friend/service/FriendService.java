@@ -3,64 +3,69 @@ package xyz.tomorrowlearncamp.newsfeed.friend.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.tomorrowlearncamp.newsfeed.friend.dto.request.AddFriendRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.friend.dto.response.AddFriendResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
+import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
 import xyz.tomorrowlearncamp.newsfeed.friend.entity.Friend;
-import xyz.tomorrowlearncamp.newsfeed.friend.enumerator.FriendRequestStatus;
+import xyz.tomorrowlearncamp.newsfeed.friend.enums.FriendRequestStatus;
 import xyz.tomorrowlearncamp.newsfeed.friend.repository.FriendRepository;
-import xyz.tomorrowlearncamp.newsfeed.friend.temp.User;
-import xyz.tomorrowlearncamp.newsfeed.friend.temp.UserRepository;
+import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class FriendService {
     private final FriendRepository friendRepository;
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
 
     @Transactional
-    public AddFriendResponseDto sendFriendRequest(Long requestUserId, AddFriendRequestDto dto) {
-        User requestUser = userRepository.findById(requestUserId)
-                .orElseThrow(() -> new IllegalArgumentException("요청한 사용자가 존재하지 않습니다."));
+    public void sendFriendRequest(Long requestUserId, Long receivedUserId) {
+        Users requestUser = usersRepository.findById(requestUserId)
+                .orElseThrow(NotFoundUserException::new);
 
-        User receivedUser = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("추가하려는 친구가 존재하지 않습니다."));
+        Users receivedUser = usersRepository.findById(receivedUserId)
+                .orElseThrow(NotFoundUserException::new);
 
         Optional<Friend> existingRequest = friendRepository.findByRequestUserAndReceivedUserAndStatus(
                 receivedUser, requestUser, FriendRequestStatus.WAITING
         );
 
+        Friend friendRequest;
+
         if(existingRequest.isPresent()) {
-            Friend friendRequest = existingRequest.get();
+            friendRequest = existingRequest.get();
             friendRequest.setStatus(FriendRequestStatus.ACCEPTED);
-            friendRepository.save(friendRequest);
-            return new AddFriendResponseDto(requestUser, receivedUser, FriendRequestStatus.ACCEPTED);
         } else {
-            Friend friendRequest = new Friend(requestUser, receivedUser, FriendRequestStatus.WAITING);
-            friendRepository.save(friendRequest);
-            return new AddFriendResponseDto(requestUser, receivedUser, FriendRequestStatus.WAITING);
+            friendRequest = new Friend(requestUser, receivedUser, FriendRequestStatus.WAITING);
         }
+        friendRepository.save(friendRequest);
     }
 
     @Transactional(readOnly = true)
-    public List<Friend> getFriendRequest(Long userId, FriendRequestStatus status) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("요청한 사용자가 존재하지 않습니다."));
-
-        List<Friend> friendList;
+    public List<Users> getFriendRequest(Long userId, FriendRequestStatus status) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(NotFoundUserException::new);
 
         if(status == FriendRequestStatus.WAITING) {
-            friendList = friendRepository.findByReceivedUserAndStatus(user, status);
+            return friendRepository.findByReceivedUserAndStatus(user, status)
+                    .stream()
+                    .map(Friend::getRequestUser)
+                    .toList();
         } else if (status == FriendRequestStatus.ACCEPTED) {
-            friendList = friendRepository.findAcceptedFriends(user, status);
+            List<Users> receivedUsers = new ArrayList<>(friendRepository.findByRequestUserAndStatus(user, status)
+                    .stream()
+                    .map(Friend::getReceivedUser)
+                    .toList());
+            List<Users> requestUsers = friendRepository.findByReceivedUserAndStatus(user, status)
+                    .stream()
+                    .map(Friend::getRequestUser)
+                    .toList();
+            receivedUsers.addAll(requestUsers);
+            return receivedUsers;
         } else {
-            throw new IllegalArgumentException("유효하지 않은 친구 요청 상태입니다.");
+            throw new NotFoundUserException();
         }
-
-        return friendList.stream()
-                .map(friend -> new Friend(friend.getRequestUser(), friend.getReceivedUser(), friend.getStatus())).toList();
     }
 }
