@@ -23,7 +23,7 @@ public class FriendService {
 
     @Transactional
     public void sendFriendRequest(Long requestUserId, Long receivedUserId) {
-        if(requestUserId.equals(receivedUserId)){
+        if (requestUserId.equals(receivedUserId)) {
             throw new NotFoundUserException();
         }
 
@@ -39,7 +39,7 @@ public class FriendService {
 
         Friend friendRequest;
 
-        if(existingRequest.isPresent()) {
+        if (existingRequest.isPresent()) {
             friendRequest = existingRequest.get();
             friendRequest.setStatus(FriendRequestStatus.ACCEPTED);
         } else {
@@ -55,7 +55,7 @@ public class FriendService {
 
         List<Long> ResponseList = new ArrayList<>();
 
-        if(status.equals("WAITING")) {
+        if (status.equals("WAITING")) {
             ResponseList = friendRepository.findByReceivedUserIdAndStatus(user.getId(), FriendRequestStatus.WAITING)
                     .stream()
                     .map(Friend::getRequestUserId)
@@ -79,5 +79,13 @@ public class FriendService {
         return usersList.stream()
                 .map(users -> new UserResponseDto(users.getId(), users.getUsername(), users.getEmail()))
                 .toList();
+    }
+
+    public void delete(Long requestUserId, Long userId) {
+        Friend friend = friendRepository.findByRequestUserIdAndReceivedUserIdAndStatus(requestUserId, userId, FriendRequestStatus.ACCEPTED)
+                .orElseGet(() -> friendRepository.findByRequestUserIdAndReceivedUserIdAndStatus(userId, requestUserId, FriendRequestStatus.ACCEPTED)
+                .orElseThrow(NotFoundUserException::new));
+
+        friendRepository.delete(friend);
     }
 }
