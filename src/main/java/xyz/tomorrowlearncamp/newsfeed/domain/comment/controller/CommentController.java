@@ -20,18 +20,20 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
-    public ResponseEntity<CreateCommentResponseDto> create(@Validated @RequestBody CreateCommentRequestDto requestDto) {
-        CreateCommentResponseDto responseDto = commentService.create(requestDto);
+    public ResponseEntity<CreateCommentResponseDto> save(@Validated @RequestBody CreateCommentRequestDto requestDto,
+                                                         @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto sessionUser) {
+        CreateCommentResponseDto responseDto = commentService.save(requestDto, sessionUser.getId());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<ReadCommentResponseDto>> findAll(@RequestParam Long postId) {
-        List<ReadCommentResponseDto> dtos = commentService.findAll(postId);
+    public ResponseEntity<List<ReadCommentResponseDto>> getCommentsByNewsFeedId(@RequestParam Long newsFeedId) {
+        List<ReadCommentResponseDto> dtos = commentService.getCommentsByNewsFeedId(newsFeedId);
+
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
-    @PutMapping("/{commentId}")
+    @PatchMapping("/{commentId}")
     public ResponseEntity<UpdateCommentResponseDto> update(@PathVariable Long commentId,
                                                            @Validated @RequestBody UpdateCommentRequestDto requestDto,
                                                            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUserResponseDto) {

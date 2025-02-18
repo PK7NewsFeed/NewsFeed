@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.RequestDto.DeleteUsersRequestDto;
@@ -45,24 +46,24 @@ public class UsersController {
 
     @PatchMapping
     public ResponseEntity<UpdateUsersResponseDto> updateUser(
-            @RequestBody UpdateUsersRequestDto dto,
+            @Validated  @RequestBody UpdateUsersRequestDto dto,
             @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
             ) {
         return new ResponseEntity<>(usersService.updateUser(dto, loginUser.getId()), HttpStatus.OK);
     }
 
     @PatchMapping("/password")
-    public ResponseEntity<Void> updatePassword(
-            @RequestBody UpdatePasswordRequestDto dto,
+    public ResponseEntity<String> updatePassword(
+            @Validated @RequestBody UpdatePasswordRequestDto dto,
             @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
     ) {
         usersService.updateUserPassword(dto, loginUser.getId());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<Void> deleteUser(
-            @RequestBody DeleteUsersRequestDto dto,
+    public ResponseEntity<String> deleteUser(
+            @Validated @RequestBody DeleteUsersRequestDto dto,
             @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser,
             HttpServletRequest httpServletRequest
     ) {
@@ -75,6 +76,6 @@ public class UsersController {
             session.invalidate();
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 }

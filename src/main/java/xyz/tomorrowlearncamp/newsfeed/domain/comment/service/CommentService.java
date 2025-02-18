@@ -26,13 +26,14 @@ public class CommentService {
     private final NewsFeedRepository newsFeedRepository;
 
 
-    public CreateCommentResponseDto create(CreateCommentRequestDto requestDto) {
-        Users user = usersRepository.findById(requestDto.getUserId())
+    public CreateCommentResponseDto save(CreateCommentRequestDto requestDto, Long sessionUserId) {
+        int depth = 0;
+
+        Users user = usersRepository.findById(sessionUserId)
                 .orElseThrow(NotFoundUserException::new);
 
         NewsFeed newsFeed = newsFeedRepository.findById(requestDto.getNewsFeedId());
 
-        int depth = 0;
         // parentComment 있는지 확인
         Comment parentComment = null;
         if (requestDto.getParentCommentId() != null) {
@@ -45,7 +46,7 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<ReadCommentResponseDto> findAll(Long newsFeedId) {
+    public List<ReadCommentResponseDto> getCommentsByNewsFeedId(Long newsFeedId) {
         List<Comment> comments = commentRepository.findByNewsFeedId(newsFeedId);
         return comments.stream()
                 .map(ReadCommentResponseDto::toDto)
@@ -61,7 +62,16 @@ public class CommentService {
         }
 
         comment.updateContent(newContent);
-        return new UpdateCommentResponseDto(comment.getContent());
+        return new UpdateCommentResponseDto(
+                comment.getId(),
+                comment.getUser().getId(),
+                comment.getNewsFeed().getId(),
+                comment.getUser().getUsername(),
+                comment.getNewsFeed().getFeedname,
+                comment.getContent(),
+                comment.getParentComment().getId(),
+                comment.getCreatedAt(),
+                comment.getUpdatedAt());
     }
 
     @Transactional
