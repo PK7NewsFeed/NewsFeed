@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.RequestDto.DeleteUsersRequestDto;
@@ -45,7 +46,7 @@ public class UsersController {
 
     @PatchMapping
     public ResponseEntity<UpdateUsersResponseDto> updateUser(
-            @RequestBody UpdateUsersRequestDto dto,
+            @Validated  @RequestBody UpdateUsersRequestDto dto,
             @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
             ) {
         return new ResponseEntity<>(usersService.updateUser(dto, loginUser.getId()), HttpStatus.OK);
@@ -53,7 +54,7 @@ public class UsersController {
 
     @PatchMapping("/password")
     public ResponseEntity<String> updatePassword(
-            @RequestBody UpdatePasswordRequestDto dto,
+            @Validated @RequestBody UpdatePasswordRequestDto dto,
             @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
     ) {
         usersService.updateUserPassword(dto, loginUser.getId());
@@ -62,7 +63,7 @@ public class UsersController {
 
     @PostMapping("/delete")
     public ResponseEntity<String> deleteUser(
-            @RequestBody DeleteUsersRequestDto dto,
+            @Validated @RequestBody DeleteUsersRequestDto dto,
             @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser,
             HttpServletRequest httpServletRequest
     ) {
