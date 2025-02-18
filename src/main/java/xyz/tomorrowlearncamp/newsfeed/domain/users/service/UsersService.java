@@ -114,6 +114,6 @@ public class UsersService {
             throw new InvalidPasswordException();
         }
 
-        usersRepository.deleteById(id);
+        users.delete();
     }
 }
