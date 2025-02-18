@@ -3,13 +3,14 @@ package xyz.tomorrowlearncamp.newsfeed.domain.comment.dto;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 
 @Getter
 public class CreateCommentRequestDto {
 
     @NotBlank(message = "댓글을 입력하세요")
+    @Size(min = 2, max = 1000)
     private final String content;
 
     @NotNull(message = "사용자 필수")

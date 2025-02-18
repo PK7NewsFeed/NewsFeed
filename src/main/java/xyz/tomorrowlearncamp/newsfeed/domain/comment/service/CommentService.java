@@ -26,13 +26,14 @@ public class CommentService {
     private final NewsFeedRepository newsFeedRepository;
 
 
-    public CreateCommentResponseDto create(CreateCommentRequestDto requestDto) {
+    public CreateCommentResponseDto save(CreateCommentRequestDto requestDto) {
+        int depth = 0;
+
         Users user = usersRepository.findById(requestDto.getUserId())
                 .orElseThrow(NotFoundUserException::new);
 
         NewsFeed newsFeed = newsFeedRepository.findById(requestDto.getNewsFeedId());
 
-        int depth = 0;
         // parentComment 있는지 확인
         Comment parentComment = null;
         if (requestDto.getParentCommentId() != null) {
@@ -61,7 +62,16 @@ public class CommentService {
         }
 
         comment.updateContent(newContent);
-        return new UpdateCommentResponseDto(comment.getContent());
+        return new UpdateCommentResponseDto(
+                comment.getId(),
+                comment.getUser().getId(),
+                comment.getNewsFeed().getId(),
+                comment.getUser().getUsername(),
+                comment.getNewsFeed().getFeedname,
+                comment.getContent(),
+                comment.getParentComment().getId(),
+                comment.getCreatedAt(),
+                comment.getUpdatedAt());
     }
 
     @Transactional

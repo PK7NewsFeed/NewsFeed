@@ -11,7 +11,7 @@ import xyz.tomorrowlearncamp.newsfeed.domain.comment_like.dto.CommentLikeRequest
 import xyz.tomorrowlearncamp.newsfeed.domain.comment_like.service.CommentLikeService;
 
 @RestController
-@RequestMapping("/comments/{commentsId}")
+@RequestMapping("/comments/{commentsId}/like")
 @RequiredArgsConstructor
 public class CommentLikeController {
 
