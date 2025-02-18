@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto.NewsFeedRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto.NewsFeedUpdateRequestDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.NewsFeedResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.NewsFeedUpdateResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
@@ -49,7 +50,7 @@ public class NewsFeedService {
     }
 
     @Transactional
-    public NewsFeedUpdateResponseDto update(Long postId, NewsFeedRequestDto requestDto) {
+    public NewsFeedUpdateResponseDto update(Long postId, NewsFeedUpdateRequestDto requestDto) {
         NewsFeed newsFeed = newsFeedRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당 ID에 맞는 뉴스피드가 없습니다.")
         );

@@ -3,11 +3,15 @@ package xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto.NewsFeedRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto.NewsFeedUpdateRequestDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.NewsFeedResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.NewsFeedUpdateResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.service.NewsFeedService;
+import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 
 import java.util.List;
 
@@ -18,7 +22,10 @@ public class NewsFeedController {
     private final NewsFeedService newsFeedService;
 
     @PostMapping("/newsfeeds")
-    public ResponseEntity<NewsFeedResponseDto> save(@RequestBody NewsFeedRequestDto requestDto) {
+    public ResponseEntity<NewsFeedResponseDto> save(
+            @Validated @RequestBody NewsFeedRequestDto requestDto,
+            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
+            ) {
         return new ResponseEntity<>(newsFeedService.save(requestDto), HttpStatus.CREATED);
     }
 
@@ -33,12 +40,19 @@ public class NewsFeedController {
     }
 
     @PatchMapping("/newsfeeds/{newsfeedId}")
-    public ResponseEntity<NewsFeedUpdateResponseDto> updateTitle(@PathVariable Long newsfeedId, @RequestBody NewsFeedRequestDto requestDto) {
+    public ResponseEntity<NewsFeedUpdateResponseDto> updateTitle(
+            @PathVariable Long newsfeedId,
+            @Validated @RequestBody NewsFeedUpdateRequestDto requestDto,
+            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
+    ) {
         return new ResponseEntity<>(newsFeedService.update(newsfeedId, requestDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/newsfeeds/{newsfeedId}")
-    public void delete(@PathVariable Long newsfeedId) {
+    public void delete(
+            @PathVariable Long newsfeedId,
+            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
+    ) {
         newsFeedService.deleteById(newsfeedId);
     }
 }
