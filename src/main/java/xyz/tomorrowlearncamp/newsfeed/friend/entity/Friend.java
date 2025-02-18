@@ -17,20 +17,15 @@ public class Friend extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_user")
-    private Users requestUser;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "received_user")
-    private Users receivedUser;
+    private Long requestUserId;
+    private Long receivedUserId;
 
     @Setter
     private FriendRequestStatus status;
 
-    public Friend(Users requestUser, Users receivedUser, FriendRequestStatus status) {
-        requestUser = requestUser;
-        receivedUser = receivedUser;
+    public Friend(Long requestUserId, Long receivedUserId, FriendRequestStatus status) {
+        this.requestUserId = requestUserId;
+        this.receivedUserId = receivedUserId;
         this.status = status;
     }
 }
