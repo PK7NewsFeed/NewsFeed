@@ -1,5 +1,8 @@
 # 내일배움캠프 뉴스 피드 앱 만들기
 
+## 개요
+SNS의 주요 기능을 메인으로하는 REST API. </br>
+사용자, 게시글(피드), 댓글, 친구, 좋아요 각 기능별 CRUD 기능 구현.
 
 ## 개발 환경
 - IntellJ IDEA Ultimate Edition 2024.3.1.1
@@ -18,25 +21,43 @@
 
 
 ## 개발자 소개
-
+<details>
+    <summary>팀원</summary>
 
 ### 개발자 소개 양식 및 맡은 역할
-이름 :
-간단 자기 소개 : (한줄)
-맡은 역할 :
+- 이름 : 전승민
+  - 프로젝트 후기 : 
+  - 맡은 역할 : 댓글 CRUD , 댓글 좋아요 기능
 
+- 이름 : 유은호
+  - 프로젝트 후기 : 
+  - 맡은 역할 : 친구 신청, 친구 신청 목록 관리
+
+- 이름 : 윤현호
+  - 프로젝트 후기 : 
+  - 맡은 역할 : 사용자 CRUD
+
+- 이름 : 이은성
+  - 프로젝트 후기 : 
+  - 맡은 역할 : 공통 예외 처리, 인증/인가, 로그인 필터, 발표/발표자료 준비
+
+- 이름 : 전영환
+  - 프로젝트 후기 : 
+  - 맡은 역할 : 게시글(피드) CRUD
+
+</details>
 
 ## 개발자 블로그
 
-    https://strnetwork.tistory.com/
+    이은성 : https://strnetwork.tistory.com/
 
-    https://velog.io/@mapleclover/
+    유은호 : https://velog.io/@mapleclover/
 
-    velog.io/@seung103/
+    전승민 : velog.io/@seung103/
 
-    https://velog.io/@younghwan314/
+    전영환 : https://velog.io/@younghwan314/
 
-    https://seaking110.tistory.com/
+    윤현호 : https://seaking110.tistory.com/
 
 ## 개발 일정
 
@@ -82,14 +103,17 @@
 </details>
 
 <details>
-    <summary>API 명세서</summary>
-
-
-<details>
-    <summary>Auth API</summary>
-|기능|URL|request|response|COMMENT|정상응답|잘못된 응답|
-|---|---|---|---|-------|------|-------|
+  <summary>API 명세서</summary>
+  
+  <summary>Auth API</summary>
+      |기능|URL|request|response|COMMENT|정상응답|잘못된 응답|
+      |---|---|---|---|-------|------|-------|
+  
 </details>
+
+
+
+
 
 </details>
 
