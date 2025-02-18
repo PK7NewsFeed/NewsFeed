@@ -20,20 +20,20 @@ public class SignUpUserRequestDto {
     @Email(message = "이메일 형식이 아닙니다.")
     @Pattern(regexp = Const.EMAIL_REGEX, message = "이메일 형식이 아닙니다.")
     @Size(min = 8, max = 30)
-    private String email;
+    private final String email;
 
     @NotNull
     @Size(min = 8, max = 20)
     @Pattern(regexp = Const.PASSWORD_REGEX, message = "메세지 양식을 확인해주세요.")
-    private String password;
+    private final String password;
 
     @NotNull
     @Size(min = 1, max = 10)
-    private String username;
+    private final String username;
 
     @NotNull(message = "성별을 선택해주세요.")
-    private Gender gender;
+    private final Gender gender;
 
     @NotNull(message = "태어난 날짜를 선택해주세요.")
-    private Timestamp birthDate;
+    private final Timestamp birthDate;
 }
