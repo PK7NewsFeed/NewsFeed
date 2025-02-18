@@ -1,14 +1,13 @@
-package xyz.tomorrowlearncamp.newsfeed.friend.service;
+package xyz.tomorrowlearncamp.newsfeed.domain.friend.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
-import xyz.tomorrowlearncamp.newsfeed.friend.dto.UserResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.friend.entity.Friend;
-import xyz.tomorrowlearncamp.newsfeed.friend.enums.FriendRequestStatus;
-import xyz.tomorrowlearncamp.newsfeed.friend.repository.FriendRepository;
+import xyz.tomorrowlearncamp.newsfeed.domain.friend.entity.Friend;
+import xyz.tomorrowlearncamp.newsfeed.domain.friend.enums.FriendRequestStatus;
+import xyz.tomorrowlearncamp.newsfeed.domain.friend.repository.FriendRepository;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
 
 import java.util.ArrayList;
