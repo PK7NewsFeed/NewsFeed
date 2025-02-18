@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import xyz.tomorrowlearncamp.newsfeed.global.enums.Gender;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
+import xyz.tomorrowlearncamp.newsfeed.global.etc.ErrorMessage;
 
 import java.sql.Timestamp;
 
@@ -16,21 +17,21 @@ import java.sql.Timestamp;
 public class UpdateUsersRequestDto {
     private final String username;
 
-    @NotNull(message = "내용이 비어있습니다.")
-    @Email(message = "이메일 형식이 아닙니다.")
-    @Pattern(regexp = Const.EMAIL_REGEX, message = "이메일 형식이 아닙니다.")
-    @Size(min = 10, max = 30, message = "길거나 짧습니다.")
+    @NotNull(message = ErrorMessage.EMPTY_CONTENT)
+    @Pattern(regexp = Const.EMAIL_REGEX, message = ErrorMessage.INVALID_EMAIL_FORMAT)
+    @Email(message = ErrorMessage.INVALID_EMAIL_FORMAT)
+    @Size(min = 10, max = 30, message = ErrorMessage.INVALID_EMAIL_LENGTH)
     private final String email;
 
-    @NotNull(message = "내용을 입력해주세요.")
-    @Size(min = 8, max = 20, message = "크기가 맞지 않습니다! 비밀번호는 7보다 크고 21보다 작아야합니다!")
-    @Pattern(regexp = Const.PASSWORD_REGEX, message = "전 비밀번호 양식을 확인해주세요.")
+    @NotNull(message = ErrorMessage.EMPTY_CONTENT)
+    @Size(min = 8, max = 20, message = ErrorMessage.INVALID_PASSWORD_LENGTH)
+    @Pattern(regexp = Const.PASSWORD_REGEX, message = ErrorMessage.INVALID_PASSWORD_FORMAT)
     private final String password;
 
-    @NotNull(message = "성별을 선택해주세요.")
+    @NotNull(message = ErrorMessage.MISSING_GENDER)
     private final Gender gender;
 
-    @NotNull(message = "태어난 날짜를 선택해주세요.")
+    @NotNull(message = ErrorMessage.MISSING_BIRTHDATE)
     private final Timestamp birthDate;
 
 }
