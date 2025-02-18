@@ -35,4 +35,14 @@ public class FriendController {
         Long requestUserId = loginUser.getId();
         return friendService.getFriendRequest(requestUserId, status);
     }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteFriend(
+            @RequestParam Long userId,
+            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
+    ) {
+        Long requestUserId = loginUser.getId();
+        friendService.delete(requestUserId, userId);
+        return new ResponseEntity<>("Success", HttpStatus.OK);
+    }
 }
