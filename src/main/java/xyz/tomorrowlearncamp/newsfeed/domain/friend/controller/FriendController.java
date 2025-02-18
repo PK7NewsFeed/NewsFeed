@@ -1,14 +1,12 @@
-package xyz.tomorrowlearncamp.newsfeed.friend.controller;
+package xyz.tomorrowlearncamp.newsfeed.domain.friend.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
-import xyz.tomorrowlearncamp.newsfeed.friend.dto.UserResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.friend.service.FriendService;
+import xyz.tomorrowlearncamp.newsfeed.domain.friend.dto.UserResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.friend.service.FriendService;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 
 import java.util.List;

@@ -3,6 +3,7 @@ package xyz.tomorrowlearncamp.newsfeed.domain.friend.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import xyz.tomorrowlearncamp.newsfeed.domain.friend.dto.UserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.entity.Friend;

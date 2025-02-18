@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.newsfeed.friend.dto;
+package xyz.tomorrowlearncamp.newsfeed.domain.friend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
