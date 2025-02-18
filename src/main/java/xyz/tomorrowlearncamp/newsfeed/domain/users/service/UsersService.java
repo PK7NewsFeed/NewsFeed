@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UsersService {
-
     private final UsersRepository usersRepository;
 
     private final PasswordEncoder passwordEncoder;
+
     public ReadUsersResponseDto getUserById(Long userId) {
         Users users = usersRepository.findById(userId).orElseThrow(NotFoundUserException::new);
 
@@ -41,18 +41,17 @@ public class UsersService {
 
     public List<ReadUsersResponseDto> getUsers() {
         return usersRepository.findAll().stream()
-                .map(users -> new ReadUsersResponseDto(
-                        users.getId(),
-                        users.getUsername(),
-                        users.getEmail(),
-                        users.getGender(),
-                        users.getBirthDate(),
-                        users.getCreatedAt(),
-                        users.getUpdatedAt()
-                )
+                .map(users -> ReadUsersResponseDto.builder()
+                        .id(users.getId())
+                        .email(users.getEmail())
+                        .username(users.getUsername())
+                        .gender(users.getGender())
+                        .birthDate(users.getBirthDate())
+                        .createdAt(users.getCreatedAt())
+                        .updatedAt(users.getUpdatedAt())
+                        .build()
         ).collect(Collectors.toList());
     }
-
 
     @Transactional
     public UpdateUsersResponseDto updateUser(UpdateUsersRequestDto dto, Long id) {
@@ -91,7 +90,7 @@ public class UsersService {
     public void updateUserPassword(UpdatePasswordRequestDto dto, Long id) {
         Users users = usersRepository.findById(id).orElseThrow(NotFoundUserException::new);
 
-//         비밀번호 검증
+        // 비밀번호 검증
         if (!passwordEncoder.matches(dto.getOldPassword(), users.getPassword())) {
             throw new InvalidPasswordException();
         }
@@ -100,17 +99,21 @@ public class UsersService {
         if (!dto.getNewPassword().equals(dto.getNewPasswordCheck())) {
             throw new MismatchPasswordException();
         }
-        users.updatePassword(dto.getNewPassword());
+
+        // 비밀번호 암호화
+        String encodedPassword = passwordEncoder.encode(dto.getNewPassword());
+        users.updatePassword(encodedPassword);
     }
 
     @Transactional
     public void deleteUser(DeleteUsersRequestDto dto, Long id) {
         Users users = usersRepository.findById(id).orElseThrow(NotFoundUserException::new);
 
+        // 비밀번호 검증
         if (!passwordEncoder.matches(dto.getPassword(), users.getPassword())) {
             throw new InvalidPasswordException();
         }
 
-        usersRepository.deleteById(id);
+        users.delete();
     }
 }

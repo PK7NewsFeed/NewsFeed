@@ -10,8 +10,6 @@ public class LoginUserResponseDto {
 
     private String username;
 
-
-
     @Builder
     public LoginUserResponseDto(Long id, String username) {
         this.id = id;

@@ -10,7 +10,6 @@ import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 @AllArgsConstructor
 @Getter
 public class UpdatePasswordRequestDto {
-
     @NotNull(message = "내용을 입력해주세요.")
     @Size(min = 8, max = 20, message = "크기가 맞지 않습니다! 비밀번호는 7보다 크고 21보다 작아야합니다!")
     @Pattern(regexp = Const.PASSWORD_REGEX, message = "전 비밀번호 양식을 확인해주세요.")

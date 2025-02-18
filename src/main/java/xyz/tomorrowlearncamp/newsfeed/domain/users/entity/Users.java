@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
 import xyz.tomorrowlearncamp.newsfeed.global.entity.BaseEntity;
 import xyz.tomorrowlearncamp.newsfeed.global.enums.Gender;
 
@@ -11,6 +12,7 @@ import java.sql.Timestamp;
 
 @Entity
 @NoArgsConstructor
+@SQLRestriction("deleted = false")
 @Getter
 public class Users extends BaseEntity {
 
@@ -34,6 +36,9 @@ public class Users extends BaseEntity {
     @Column(nullable = false)
     private Timestamp birthDate;
 
+    @Column(nullable = false)
+    private boolean deleted = false;
+
     public void updateUserName(String username) {
         this.username = username;
     }
@@ -53,6 +58,10 @@ public class Users extends BaseEntity {
     public void updatePassword(String password) {
         this.password = password;
     }
+
+    public void delete() {
+        this.deleted = true;
+    }
     @Builder
     public Users(String email, String password, String username, Gender gender, Timestamp birthDate) {
         this.email = email;
@@ -61,4 +70,6 @@ public class Users extends BaseEntity {
         this.gender = gender;
         this.birthDate = birthDate;
     }
+
+
 }
