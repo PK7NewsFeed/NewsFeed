@@ -44,6 +44,15 @@ public class ExControllerAdvice {
         return new ResponseEntity<>(new ErrorMessage(ErrorCode.MISMATCH_PASSWORD, e.getStatusCode()), e.getStatusCode());
     }
 
+    @ExceptionHandler(NotFoundNewsFeedException.class)
+    public ResponseEntity<ErrorMessage> notFoundNewsFeedException(NotFoundNewsFeedException e) {
+        return new ResponseEntity<>(new ErrorMessage(ErrorCode.NOT_FOUND_NEWSFEED, e.getStatusCode()), e.getStatusCode());
+    }
+
+    @ExceptionHandler(SameAsCurrentPasswordException.class)
+    public ResponseEntity<ErrorMessage> sameAsCurrentPasswordException(SameAsCurrentPasswordException e) {
+        return new ResponseEntity<>(new ErrorMessage(ErrorCode.SAME_AS_CURRENT_PASSWORD, e.getStatusCode()), e.getStatusCode());
+    }
 
     // @Validated 에러 출력
     @ExceptionHandler(MethodArgumentNotValidException.class)
