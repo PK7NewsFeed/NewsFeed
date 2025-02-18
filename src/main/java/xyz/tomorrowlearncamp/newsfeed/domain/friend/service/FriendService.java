@@ -23,6 +23,10 @@ public class FriendService {
 
     @Transactional
     public void sendFriendRequest(Long requestUserId, Long receivedUserId) {
+        if(requestUserId.equals(receivedUserId)){
+            throw new NotFoundUserException();
+        }
+
         Users requestUser = usersRepository.findById(requestUserId)
                 .orElseThrow(NotFoundUserException::new);
 
