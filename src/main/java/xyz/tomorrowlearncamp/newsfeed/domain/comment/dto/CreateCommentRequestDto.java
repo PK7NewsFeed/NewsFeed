@@ -13,9 +13,6 @@ public class CreateCommentRequestDto {
     @Size(min = 2, max = 1000)
     private final String content;
 
-    @NotNull(message = "사용자 필수")
-    private final Long userId;
-
     @NotNull(message = "게시글 필수")
     private final Long newsFeedId;
 
@@ -24,9 +21,8 @@ public class CreateCommentRequestDto {
     @Nullable
     private final Long parentCommentId;
 
-    public CreateCommentRequestDto(String content, Long userId, Long newsFeedId, Integer depth, @Nullable Long parentCommentId) {
+    public CreateCommentRequestDto(String content, Long newsFeedId, Integer depth, @Nullable Long parentCommentId) {
         this.content = content;
-        this.userId = userId;
         this.newsFeedId = newsFeedId;
         this.depth = (depth != null) ? depth : 0;
         this.parentCommentId = parentCommentId;

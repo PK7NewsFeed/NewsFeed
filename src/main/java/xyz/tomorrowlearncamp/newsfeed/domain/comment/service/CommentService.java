@@ -26,10 +26,10 @@ public class CommentService {
     private final NewsFeedRepository newsFeedRepository;
 
 
-    public CreateCommentResponseDto save(CreateCommentRequestDto requestDto) {
+    public CreateCommentResponseDto save(CreateCommentRequestDto requestDto, Long sessionUserId) {
         int depth = 0;
 
-        Users user = usersRepository.findById(requestDto.getUserId())
+        Users user = usersRepository.findById(sessionUserId)
                 .orElseThrow(NotFoundUserException::new);
 
         NewsFeed newsFeed = newsFeedRepository.findById(requestDto.getNewsFeedId());
@@ -46,7 +46,7 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<ReadCommentResponseDto> findAll(Long newsFeedId) {
+    public List<ReadCommentResponseDto> getCommentsByNewsFeedId(Long newsFeedId) {
         List<Comment> comments = commentRepository.findByNewsFeedId(newsFeedId);
         return comments.stream()
                 .map(ReadCommentResponseDto::toDto)
