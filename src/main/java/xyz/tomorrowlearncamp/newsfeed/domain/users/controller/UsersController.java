@@ -52,16 +52,16 @@ public class UsersController {
     }
 
     @PatchMapping("/password")
-    public ResponseEntity<Void> updatePassword(
+    public ResponseEntity<String> updatePassword(
             @RequestBody UpdatePasswordRequestDto dto,
             @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
     ) {
         usersService.updateUserPassword(dto, loginUser.getId());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<Void> deleteUser(
+    public ResponseEntity<String> deleteUser(
             @RequestBody DeleteUsersRequestDto dto,
             @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser,
             HttpServletRequest httpServletRequest
@@ -75,6 +75,6 @@ public class UsersController {
             session.invalidate();
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 }
