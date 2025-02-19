@@ -13,6 +13,8 @@ import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.service.CommentService;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.dto.*;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
+import xyz.tomorrowlearncamp.newsfeed.global.etc.JwtProperties;
+import xyz.tomorrowlearncamp.newsfeed.global.util.JwtUtil;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,11 +22,13 @@ import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 public class CommentController {
 
     private final CommentService commentService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping
     public ResponseEntity<CreateCommentResponseDto> save(@Validated @RequestBody CreateCommentRequestDto requestDto,
-                                                         @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto sessionUser) {
-        CreateCommentResponseDto responseDto = commentService.save(requestDto, sessionUser.getId());
+                                                         @RequestHeader(JwtProperties.HEADER_STRING) String token) {
+        Long userId = jwtUtil.extractUserId(token);
+        CreateCommentResponseDto responseDto = commentService.save(requestDto, userId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -40,15 +44,17 @@ public class CommentController {
     @PatchMapping("/{commentId}")
     public ResponseEntity<UpdateCommentResponseDto> update(@PathVariable Long commentId,
                                                            @Validated @RequestBody UpdateCommentRequestDto requestDto,
-                                                           @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUserResponseDto) {
-        UpdateCommentResponseDto responseDto = commentService.update(commentId, requestDto.getContent(), loginUserResponseDto.getId());
+                                                           @RequestHeader(JwtProperties.HEADER_STRING) String token) {
+        Long userId = jwtUtil.extractUserId(token);
+        UpdateCommentResponseDto responseDto = commentService.update(commentId, requestDto.getContent(), userId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> delete(@PathVariable Long commentId,
-                                       @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto responseDto) {
-        commentService.delete(commentId, responseDto.getId());
+                                       @RequestHeader(JwtProperties.HEADER_STRING) String token) {
+        Long userId = jwtUtil.extractUserId(token);
+        commentService.delete(commentId, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
