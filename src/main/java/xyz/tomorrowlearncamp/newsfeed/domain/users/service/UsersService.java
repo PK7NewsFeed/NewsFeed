@@ -120,4 +120,10 @@ public class UsersService {
 
         users.delete();
     }
+
+    public void validateUserExists(Long userId) {
+        if (!usersRepository.existsById(userId)) {
+            throw new NotFoundUserException();
+        }
+    }
 }
