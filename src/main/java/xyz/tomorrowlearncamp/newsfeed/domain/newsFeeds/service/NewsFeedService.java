@@ -1,10 +1,7 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto.CreateNewsFeedRequestDto;
@@ -23,7 +20,9 @@ import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.UnauthorizedWriterException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,35 +51,16 @@ public class NewsFeedService {
     public Page<ReadNewsFeedResponseDto> findAll(int page, int size, SortOrder sortOrder, LocalDate startDate, LocalDate endDate) {
         Pageable pageable = PageRequest.of(page - 1, size, sortOrder.toSort());
 
-        if (startDate != null && endDate != null) {
-            return newsFeedRepository.findAllByCreatedAtBetween(startDate.atStartOfDay(), endDate.atTime(23,59,59), pageable)
-                    .map(item -> {
-                        int likeCount = newsFeedLikeService.getCountNewsFeedLike(item.getId());
-                        return ReadNewsFeedResponseDto.toDto(item, likeCount);
-                    });
-        }
+        LocalDateTime startDateTime = (startDate != null) ? startDate.atStartOfDay() : null;
+        LocalDateTime endDateTime = (endDate != null) ? endDate.atTime(23, 59, 59) : null;
 
-        if (startDate != null) {
-            return newsFeedRepository.findAllByCreatedAtAfter(startDate.atStartOfDay(), pageable)
-                    .map(item -> {
-                        int likeCount = newsFeedLikeService.getCountNewsFeedLike(item.getId());
-                        return ReadNewsFeedResponseDto.toDto(item, likeCount);
-                    });
-        }
+        Page<Object[]> result = newsFeedRepository.findAllWithLikeCount(startDateTime, endDateTime, pageable);
 
-        if (endDate != null) {
-            return newsFeedRepository.findAllByCreatedAtBefore(endDate.atTime(23,59,59), pageable)
-                    .map(item -> {
-                        int likeCount = newsFeedLikeService.getCountNewsFeedLike(item.getId());
-                        return ReadNewsFeedResponseDto.toDto(item, likeCount);
-                    });
-        }
-
-        return newsFeedRepository.findAll(pageable)
-                .map(item -> {
-                    int likeCount = newsFeedLikeService.getCountNewsFeedLike(item.getId());
-                    return ReadNewsFeedResponseDto.toDto(item, likeCount);
-                });
+        return result.map(item -> {
+            NewsFeed newsFeed = (NewsFeed) item[0];  // NewsFeed 객체
+            long likeCount = (long) item[1];  // likeCount
+            return ReadNewsFeedResponseDto.toDto(newsFeed, (int) likeCount);
+        });
     }
 
     @Transactional(readOnly = true)
