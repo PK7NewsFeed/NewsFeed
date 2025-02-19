@@ -12,7 +12,9 @@ import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.repository.NewsFeedRepository;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
+import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundNewsFeedException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
+import xyz.tomorrowlearncamp.newsfeed.global.exception.UnauthorizedWriterException;
 
 import java.util.List;
 
@@ -55,9 +57,7 @@ public class NewsFeedService {
 
     @Transactional(readOnly = true)
     public ReadNewsFeedResponseDto findById(Long newsfeedId) {
-        NewsFeed newsFeed = newsFeedRepository.findById(newsfeedId).orElseThrow(
-                () -> new IllegalArgumentException("해당 ID에 맞는 뉴스피드가 없습니다.")
-        );
+        NewsFeed newsFeed = newsFeedRepository.findById(newsfeedId).orElseThrow(NotFoundNewsFeedException::new);
 
         return new ReadNewsFeedResponseDto(
                 newsFeed.getId(),
@@ -71,11 +71,10 @@ public class NewsFeedService {
 
     @Transactional
     public UpdateNewsFeedResponseDto update(Long newsfeedId, UpdateNewsFeedRequestDto requestDto, Long userId) {
-        NewsFeed newsFeed = newsFeedRepository.findById(newsfeedId).orElseThrow(
-        );
+        NewsFeed newsFeed = newsFeedRepository.findById(newsfeedId).orElseThrow(NotFoundNewsFeedException::new);
 
         if (newsFeed.getUser().getId() != userId) {
-            throw new IllegalArgumentException("작성자가 아닙니다.");
+            throw new UnauthorizedWriterException();
         }
 
         if (requestDto.getTitle() != null && !requestDto.getTitle().isBlank()) {
@@ -90,7 +89,12 @@ public class NewsFeedService {
 
     @Transactional
     public void deleteById(Long newsfeedId, Long userId) {
-        NewsFeed newsFeed = newsFeedRepository.findById(newsfeedId).orElseThrow(() -> new IllegalArgumentException());
+        NewsFeed newsFeed = newsFeedRepository.findById(newsfeedId).orElseThrow(NotFoundNewsFeedException::new);
+
+        if (newsFeed.getUser().getId() != userId) {
+            throw new UnauthorizedWriterException();
+        }
+
         newsFeed.delete();
     }
 }
