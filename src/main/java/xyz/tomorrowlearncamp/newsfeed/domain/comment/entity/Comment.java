@@ -12,6 +12,7 @@ import xyz.tomorrowlearncamp.newsfeed.global.entity.BaseEntity;
 @Getter
 @Entity
 @Table(name = "comment")
+@NoArgsConstructor
 public class Comment extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

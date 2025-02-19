@@ -48,12 +48,12 @@ public class NewsFeedController {
         return new ResponseEntity<>(newsFeedService.getNewsFeeds(page, size, sortOrder, startDate, endDate), HttpStatus.OK);
     }
 
-    @GetMapping("/{newsfeedId}")
+    @GetMapping("/{newsFeedId}")
     public ResponseEntity<ReadNewsFeedResponseDto> getNewsFeedById(@PathVariable Long newsFeedId) {
         return new ResponseEntity<>(newsFeedService.getNewsFeedDtoById(newsFeedId), HttpStatus.OK);
     }
 
-    @PatchMapping("/{newsfeedId}")
+    @PatchMapping("/{newsFeedId}")
     public ResponseEntity<UpdateNewsFeedResponseDto> updateNewsFeed(
             @PathVariable Long newsFeedId,
             @Validated @RequestBody UpdateNewsFeedRequestDto requestDto,
@@ -63,7 +63,7 @@ public class NewsFeedController {
         return new ResponseEntity<>(newsFeedService.update(newsFeedId, requestDto, userId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{newsfeedId}")
+    @DeleteMapping("/{newsFeedId}")
     public void delete(
             @PathVariable Long newsFeedId,
             @RequestHeader(JwtProperties.HEADER_STRING) String token
