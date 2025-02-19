@@ -6,7 +6,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.entity.Friend;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.enums.FriendRequestStatus;
-
 import java.util.List;
 import java.util.Optional;
 

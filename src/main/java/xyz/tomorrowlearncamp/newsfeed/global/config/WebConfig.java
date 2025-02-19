@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import xyz.tomorrowlearncamp.newsfeed.auth.service.AuthService;
 import xyz.tomorrowlearncamp.newsfeed.global.filter.JwtLoginFilter;
-import xyz.tomorrowlearncamp.newsfeed.global.filter.LoginFilter;
 import xyz.tomorrowlearncamp.newsfeed.global.util.JwtUtil;
 
 @Configuration
@@ -29,15 +28,4 @@ public class WebConfig implements WebMvcConfigurer {
 
         return filterRegistrationBean;
     }
-
-//    @Bean
-//    public FilterRegistrationBean<Filter> loginFilter() {
-//        FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
-//
-//        filterRegistrationBean.setFilter(new LoginFilter());
-//        filterRegistrationBean.setOrder(2);
-//        filterRegistrationBean.addUrlPatterns("/*");
-//
-//        return filterRegistrationBean;
-//    }
 }

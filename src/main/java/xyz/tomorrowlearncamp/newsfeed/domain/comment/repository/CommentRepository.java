@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 
-import java.util.List;
-
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     default Comment findByIdOrElseThrow(Long id) {
         return findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 댓글이 존재하지 않습니다"));

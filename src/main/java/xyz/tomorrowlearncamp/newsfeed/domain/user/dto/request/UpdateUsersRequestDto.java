@@ -9,10 +9,8 @@ import lombok.Getter;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.enums.Gender;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.ErrorMessage;
-
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 @Getter
 @AllArgsConstructor

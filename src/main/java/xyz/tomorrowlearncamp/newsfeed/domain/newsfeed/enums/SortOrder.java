@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.enums;
+package xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.enums;
 
 import org.springframework.data.domain.Sort;
 

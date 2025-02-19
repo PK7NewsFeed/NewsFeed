@@ -3,7 +3,6 @@ package xyz.tomorrowlearncamp.newsfeed.domain.user.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
-
 import java.util.Optional;
 
 @Repository

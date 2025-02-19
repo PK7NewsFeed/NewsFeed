@@ -1,6 +1,5 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.friend.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 

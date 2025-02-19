@@ -12,8 +12,8 @@ import xyz.tomorrowlearncamp.newsfeed.domain.comment.dto.UpdateCommentResponseDt
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.repository.CommentRepository;
 import xyz.tomorrowlearncamp.newsfeed.domain.commentlike.service.CommentLikeService;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.service.NewsFeedService;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.entity.NewsFeed;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.service.NewsFeedService;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.service.UsersService;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.LoginUserException;
@@ -34,7 +34,7 @@ public class CommentService {
 
         Users user = usersService.getUserEntityById(userId);
 
-        NewsFeed newsFeed = newsFeedService.findEntityById(requestDto.getNewsFeedId());
+        NewsFeed newsFeed = newsFeedService.getNewsFeedById(requestDto.getNewsFeedId());
 
         // parentComment 있는지 확인
         Comment parentComment = null;
@@ -42,9 +42,25 @@ public class CommentService {
             parentComment = commentRepository.findByIdOrElseThrow(requestDto.getParentCommentId());
             depth = parentComment.getDepth() + 1;
         }
-        Comment comment = new Comment(user, newsFeed, parentComment, requestDto.getContent(), depth);
+        Comment comment = Comment.builder()
+                .user(user)
+                .newsFeed(newsFeed)
+                .parentComment(parentComment)
+                .content(requestDto.getContent())
+                .depth(depth)
+                .build();
         commentRepository.save(comment);
-        return new CreateCommentResponseDto(comment);
+        return CreateCommentResponseDto.builder()
+                .id(comment.getId())
+                .userId(comment.getUser().getId())
+                .feedId(comment.getNewsFeed().getId())
+                .content(comment.getContent())
+                .parentCommentId(comment.getParentComment() != null ? comment.getParentComment().getId() : null)
+                .createdAt(comment.getCreatedAt())
+                .updatedAt(comment.getUpdatedAt())
+                .username(comment.getUser().getUsername())
+                .feedname(comment.getNewsFeed().getTitle())
+                .build();
     }
 
     @Transactional(readOnly = true)

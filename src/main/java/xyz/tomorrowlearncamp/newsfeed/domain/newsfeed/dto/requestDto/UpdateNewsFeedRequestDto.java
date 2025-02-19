@@ -1,6 +1,5 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto;
+package xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.requestDto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

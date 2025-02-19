@@ -1,23 +1,19 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.user.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.request.DeleteUsersRequestDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.request.UpdatePasswordRequestDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.request.UpdateUsersRequestDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.response.ReadUsersResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.response.UpdateUsersResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.service.UsersService;
-import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.JwtProperties;
 import xyz.tomorrowlearncamp.newsfeed.global.util.JwtUtil;
-
 import java.util.List;
 
 @RestController
@@ -82,12 +78,6 @@ public class UsersController {
         Long userId = jwtUtil.extractUserId(token);
         // 유저 삭제
         usersService.deleteUser(dto, userId);
-
-        // 세션 삭제
-        HttpSession session = httpServletRequest.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
