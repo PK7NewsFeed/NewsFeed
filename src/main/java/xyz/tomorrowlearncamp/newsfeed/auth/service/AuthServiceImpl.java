@@ -24,7 +24,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public SignUpUserResponseDto signUp(String email, String password, String username, Gender gender, LocalDate birthDate) {
         // 이메일 중복 검사
-        if (!usersRepository.existsByEmail(email)) {
+        if (usersRepository.existsByEmail(email)) {
             throw new DuplicateEmailException();
         }
 
@@ -57,7 +57,6 @@ public class AuthServiceImpl implements AuthService {
                 NotFoundUserException::new
         );
 
-
         if (!passwordEncoder.matches(password, findUser.getPassword())) { // 비밀번호가 다른 경우
             throw new InvalidPasswordOrEmailException();
         }
@@ -67,7 +66,6 @@ public class AuthServiceImpl implements AuthService {
                 .username(findUser.getUsername())
                 .build();
     }
-
 
     @Override
     public boolean existsByEmail(String email) {

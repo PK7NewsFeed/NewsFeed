@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter

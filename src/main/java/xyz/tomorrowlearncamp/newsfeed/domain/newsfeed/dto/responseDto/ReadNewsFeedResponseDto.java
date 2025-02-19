@@ -1,11 +1,9 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto;
+package xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.responseDto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.entity.NewsFeed;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
@@ -14,7 +12,7 @@ public class ReadNewsFeedResponseDto {
     private final Long id;
     private final String title;
     private final String content;
-    private final Long uesrId;
+    private final Long userId;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final int likeCount;
@@ -32,7 +30,7 @@ public class ReadNewsFeedResponseDto {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.uesrId = userId;
+        this.userId = userId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.likeCount = likeCount;

@@ -9,9 +9,7 @@ import xyz.tomorrowlearncamp.newsfeed.domain.user.service.UsersService;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.entity.Friend;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.enums.FriendRequestStatus;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.repository.FriendRepository;
-
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +38,11 @@ public class FriendService {
             friendRequest = existingRequest.get();
             friendRequest.setStatus(FriendRequestStatus.ACCEPTED);
         } else {
-            friendRequest = new Friend(requestUserId, receivedUserId, FriendRequestStatus.WAITING);
+            friendRequest = Friend.builder()
+                    .requestUserId(requestUserId)
+                    .receivedUserId(receivedUserId)
+                    .status(FriendRequestStatus.WAITING)
+                    .build();
         }
         friendRepository.save(friendRequest);
     }

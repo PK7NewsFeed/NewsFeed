@@ -23,10 +23,6 @@ public class UsersService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public Users save(Users users) {
-        return usersRepository.save(users);
-    }
-
     public ReadUsersResponseDto getUserById(Long userId) {
         Users users = usersRepository.findById(userId).orElseThrow(NotFoundUserException::new);
 
@@ -132,15 +128,4 @@ public class UsersService {
             throw new NotFoundUserException();
         }
     }
-
-    public void validateUserEmailExists(String userEmail) {
-        if (usersRepository.existsByEmail(userEmail)) {
-            throw new DuplicateEmailException();
-        }
-    }
-
-    public Users getByEmailOrThrow(String email) {
-        return usersRepository.findByEmail(email).orElseThrow((NotFoundUserException::new));
-    }
-
 }

@@ -61,6 +61,7 @@ public class Users extends BaseEntity {
     public void delete() {
         this.deleted = true;
     }
+
     @Builder
     public Users(String email, String password, String username, Gender gender, LocalDate birthDate) {
         this.email = email;

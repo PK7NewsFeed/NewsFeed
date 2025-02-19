@@ -9,10 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.service.CommentService;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.dto.*;
-import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.JwtProperties;
 import xyz.tomorrowlearncamp.newsfeed.global.util.JwtUtil;
 

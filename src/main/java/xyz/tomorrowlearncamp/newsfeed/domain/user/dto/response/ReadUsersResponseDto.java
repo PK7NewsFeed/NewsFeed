@@ -3,8 +3,6 @@ package xyz.tomorrowlearncamp.newsfeed.domain.user.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.enums.Gender;
-
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

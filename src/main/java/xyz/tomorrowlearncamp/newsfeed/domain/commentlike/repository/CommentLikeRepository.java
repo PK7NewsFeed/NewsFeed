@@ -2,7 +2,7 @@ package xyz.tomorrowlearncamp.newsfeed.domain.commentlike.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
-import xyz.tomorrowlearncamp.newsfeed.domain.commentlike.Entity.CommentLike;
+import xyz.tomorrowlearncamp.newsfeed.domain.commentlike.entity.CommentLike;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
 
 
@@ -16,7 +16,11 @@ public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> 
         if (existsByCommentAndUser(comment, user)) {
             deleteByCommentAndUser(comment, user);
         } else {
-            save(new CommentLike(user, comment));
+            save(CommentLike
+                    .builder()
+                    .user(user)
+                    .comment(comment)
+                    .build());
         }
     }
 

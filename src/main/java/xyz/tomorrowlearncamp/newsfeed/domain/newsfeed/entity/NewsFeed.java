@@ -1,6 +1,7 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity;
+package xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLRestriction;
@@ -35,6 +36,7 @@ public class NewsFeed extends BaseEntity {
         this.deleted = true;
     }
 
+    @Builder
     public NewsFeed(String title, String content, Users user) {
         this.title = title;
         this.content = content;

@@ -4,13 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.dto.UserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.service.FriendService;
-import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.JwtProperties;
 import xyz.tomorrowlearncamp.newsfeed.global.util.JwtUtil;
-
 import java.util.List;
 
 @RestController

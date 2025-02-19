@@ -2,16 +2,16 @@ package xyz.tomorrowlearncamp.newsfeed.domain.comment.entity;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.entity.NewsFeed;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.global.entity.BaseEntity;
 
 @Getter
 @Entity
 @Table(name = "comment")
-@NoArgsConstructor
 public class Comment extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +36,7 @@ public class Comment extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
+    @Builder
     public Comment(Users user, NewsFeed newsFeed, @Nullable Comment parentComment, String content, Integer depth) {
         this.user = user;
         this.newsFeed = newsFeed;

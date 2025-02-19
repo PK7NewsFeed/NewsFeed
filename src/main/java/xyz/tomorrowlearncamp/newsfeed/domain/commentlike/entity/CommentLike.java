@@ -1,6 +1,7 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.commentlike.Entity;
+package xyz.tomorrowlearncamp.newsfeed.domain.commentlike.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
@@ -23,6 +24,7 @@ public class CommentLike {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
+    @Builder
     public CommentLike(Users user, Comment comment) {
         this.user = user;
         this.comment = comment;

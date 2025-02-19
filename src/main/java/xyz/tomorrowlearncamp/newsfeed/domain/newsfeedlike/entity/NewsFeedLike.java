@@ -1,9 +1,10 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.newsfeedlike.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.entity.NewsFeed;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
 
 @Getter
@@ -23,6 +24,7 @@ public class NewsFeedLike {
     @JoinColumn(name = "newsfeed_id")
     private NewsFeed newsFeed;
 
+    @Builder
     public NewsFeedLike(Users user, NewsFeed newsFeed) {
         this.user = user;
         this.newsFeed = newsFeed;

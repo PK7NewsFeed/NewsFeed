@@ -1,6 +1,7 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.friend.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class Friend extends BaseEntity {
     @Setter
     private FriendRequestStatus status;
 
+    @Builder
     public Friend(Long requestUserId, Long receivedUserId, FriendRequestStatus status) {
         this.requestUserId = requestUserId;
         this.receivedUserId = receivedUserId;

@@ -1,14 +1,13 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.repository;
+package xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.entity.NewsFeed;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public interface NewsFeedRepository extends JpaRepository<NewsFeed,Long> {
     @Query("SELECT nf, COUNT(nfl) as likeCount " +

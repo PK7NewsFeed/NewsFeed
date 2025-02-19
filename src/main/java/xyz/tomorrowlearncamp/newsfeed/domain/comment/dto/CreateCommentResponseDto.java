@@ -1,9 +1,8 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.comment.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
-
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
@@ -29,15 +28,26 @@ public class CreateCommentResponseDto {
 
     private final LocalDateTime updatedAt;
 
-    public CreateCommentResponseDto(Comment comment) {
-        this.id = comment.getId();
-        this.userId = comment.getUser().getId();
-        this.feedId = comment.getNewsFeed().getId();
-        this.content = comment.getContent();
-        this.parentCommentId = (comment.getParentComment() != null) ? comment.getParentComment().getId() : null;
-        this.createdAt = comment.getCreatedAt();
-        this.updatedAt = comment.getUpdatedAt();
-        this.username = comment.getUser().getUsername();
-        this.feedname = comment.getNewsFeed().getTitle();
+    @Builder
+    public CreateCommentResponseDto(
+            Long id,
+            Long userId,
+            Long feedId,
+            String content,
+            Long parentCommentId,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt,
+            String username,
+            String feedname
+    ) {
+        this.id = id;
+        this.userId = userId;
+        this.feedId = feedId;
+        this.content = content;
+        this.parentCommentId = parentCommentId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.username = username;
+        this.feedname = feedname;
     }
 }
