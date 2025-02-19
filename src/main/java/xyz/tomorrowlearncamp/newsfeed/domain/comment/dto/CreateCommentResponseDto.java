@@ -22,7 +22,7 @@ public class CreateCommentResponseDto {
 
     private final Long parentCommentId;
 
-    private final int likeCount;
+    private final int likeCount = 0;
 
     private final Timestamp createdAt;
 
@@ -38,6 +38,5 @@ public class CreateCommentResponseDto {
         this.updatedAt = comment.getUpdatedAt();
         this.username = comment.getUser().getUsername();
         this.feedname = comment.getNewsFeed().getTitle();
-        this.likeCount = comment.getLikeCount();
     }
 }
