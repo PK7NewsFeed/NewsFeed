@@ -35,6 +35,6 @@ public class CreateCommentResponseDto {
         this.createdAt = comment.getCreatedAt();
         this.updatedAt = comment.getUpdatedAt();
         this.username = comment.getUser().getUsername();
-        this.feedname = comment.getNewsFeed().getNewsFeedname();
+        this.feedname = comment.getNewsFeed().getTitle();
     }
 }
