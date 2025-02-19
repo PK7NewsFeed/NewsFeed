@@ -2,6 +2,7 @@ package xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +17,7 @@ import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.enums.SortOrder;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.service.NewsFeedService;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -37,9 +39,11 @@ public class NewsFeedController {
     public ResponseEntity<Page<ReadNewsFeedResponseDto>> findAll(
             @RequestParam(required = false, defaultValue = "1") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
-            @RequestParam(required = false, defaultValue = "CREATED_AT_DESC") SortOrder sortOrder
+            @RequestParam(required = false, defaultValue = "CREATED_AT_DESC") SortOrder sortOrder,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-mm-dd") LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-mm-dd") LocalDate endDate
             ) {
-        return new ResponseEntity<>(newsFeedService.findAll(page, size, sortOrder), HttpStatus.OK);
+        return new ResponseEntity<>(newsFeedService.findAll(page, size, sortOrder, startDate, endDate), HttpStatus.OK);
     }
 
     @GetMapping("/{newsfeedId}")

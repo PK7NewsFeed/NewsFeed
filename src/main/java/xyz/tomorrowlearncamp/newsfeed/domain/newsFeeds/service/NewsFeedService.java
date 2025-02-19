@@ -21,6 +21,7 @@ import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundNewsFeedException
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.UnauthorizedWriterException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -46,8 +47,44 @@ public class NewsFeedService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ReadNewsFeedResponseDto> findAll(int page, int size, SortOrder sortOrder) {
+    public Page<ReadNewsFeedResponseDto> findAll(int page, int size, SortOrder sortOrder, LocalDate startDate, LocalDate endDate) {
         Pageable pageable = PageRequest.of(page - 1, size, sortOrder.toSort());
+
+        if (startDate != null && endDate != null) {
+            return newsFeedRepository.findAllByCreatedAtBetween(startDate.atStartOfDay(), endDate.atTime(23,59,59), pageable)
+                    .map(item -> new ReadNewsFeedResponseDto(
+                            item.getId(),
+                            item.getTitle(),
+                            item.getContent(),
+                            item.getUser().getId(),
+                            item.getCreatedAt(),
+                            item.getUpdatedAt()
+                    ));
+        }
+
+        if (startDate != null) {
+            return newsFeedRepository.findAllByCreatedAtAfter(startDate.atStartOfDay(), pageable)
+                    .map(item -> new ReadNewsFeedResponseDto(
+                            item.getId(),
+                            item.getTitle(),
+                            item.getContent(),
+                            item.getUser().getId(),
+                            item.getCreatedAt(),
+                            item.getUpdatedAt()
+                    ));
+        }
+
+        if (endDate != null) {
+            return newsFeedRepository.findAllByCreatedAtBefore(endDate.atTime(23,59,59), pageable)
+                    .map(item -> new ReadNewsFeedResponseDto(
+                            item.getId(),
+                            item.getTitle(),
+                            item.getContent(),
+                            item.getUser().getId(),
+                            item.getCreatedAt(),
+                            item.getUpdatedAt()
+                    ));
+        }
 
         return newsFeedRepository.findAll(pageable)
                 .map(item -> new ReadNewsFeedResponseDto(

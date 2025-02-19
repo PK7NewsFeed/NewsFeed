@@ -18,10 +18,10 @@ public class NewsFeedLikeController {
 
     @PostMapping("/{newsfeedsId}/like")
     public ResponseEntity<String> toggleLike(
-            @RequestBody NewsFeedLikeRequestDto requestDto,
+            @PathVariable Long newsfeedsId,
             @SessionAttribute(name =Const.LOGIN_USER)LoginUserResponseDto loginUser
     ) {
-        boolean isLiked = newsFeedLikeService.toggleLike(requestDto.getNewsFeedId(), loginUser.getId());
+        boolean isLiked = newsFeedLikeService.toggleLike(newsfeedsId, loginUser.getId());
         return new ResponseEntity<>(isLiked ? "좋아요" : "좋아요 취소", HttpStatus.OK);
     }
 }
