@@ -4,6 +4,7 @@ import lombok.Getter;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 public class CreateCommentResponseDto {
@@ -24,9 +25,9 @@ public class CreateCommentResponseDto {
 
     private final int likeCount = 0;
 
-    private final Timestamp createdAt;
+    private final LocalDateTime createdAt;
 
-    private final Timestamp updatedAt;
+    private final LocalDateTime updatedAt;
 
     public CreateCommentResponseDto(Comment comment) {
         this.id = comment.getId();

@@ -4,6 +4,7 @@ import lombok.Getter;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 public class ReadCommentResponseDto {
@@ -24,11 +25,11 @@ public class ReadCommentResponseDto {
 
     private final int likeCount;
 
-    private final Timestamp createdAt;
+    private final LocalDateTime createdAt;
 
-    private final Timestamp updatedAt;
+    private final LocalDateTime updatedAt;
 
-    public ReadCommentResponseDto(Long id, Long userId, Long feedId, Long parentCommentId, String username, String feedname, String content, int likeCount, Timestamp createdAt, Timestamp updatedAt) {
+    public ReadCommentResponseDto(Long id, Long userId, Long feedId, Long parentCommentId, String username, String feedname, String content, int likeCount, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.feedId = feedId;

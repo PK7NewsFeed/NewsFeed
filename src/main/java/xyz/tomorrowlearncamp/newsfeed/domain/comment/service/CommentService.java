@@ -70,17 +70,18 @@ public class CommentService {
 
         int likeCount = commentLikeService.getCountCommentLikes(commentId);
         comment.updateContent(newContent);
-        return new UpdateCommentResponseDto(
-                comment.getId(),
-                comment.getUser().getId(),
-                comment.getNewsFeed().getId(),
-                comment.getUser().getUsername(),
-                comment.getNewsFeed().getTitle(),
-                comment.getContent(),
-                likeCount,
-                comment.getParentComment().getId(),
-                comment.getCreatedAt(),
-                comment.getUpdatedAt());
+        return UpdateCommentResponseDto.builder()
+                .id(comment.getId())
+                .content(comment.getContent())
+                .updatedAt(comment.getUpdatedAt())
+                .createdAt(comment.getCreatedAt())
+                .feedId(comment.getNewsFeed().getId())
+                .feedname(comment.getNewsFeed().getTitle())
+                .parentCommentId(comment.getParentComment().getId())
+                .userId(comment.getUser().getId())
+                .username(comment.getUser().getUsername())
+                .likeCount(likeCount)
+                .build();
     }
 
     @Transactional
