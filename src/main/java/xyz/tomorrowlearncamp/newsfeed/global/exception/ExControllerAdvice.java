@@ -54,6 +54,11 @@ public class ExControllerAdvice {
         return new ResponseEntity<>(new ErrorMessage(ErrorCode.SAME_AS_CURRENT_PASSWORD, e.getStatusCode()), e.getStatusCode());
     }
 
+    @ExceptionHandler(UnauthorizedWriterException.class)
+    public ResponseEntity<ErrorMessage> unauthorizedWriter(UnauthorizedWriterException e) {
+        return new ResponseEntity<>(new ErrorMessage(ErrorCode.UNAUTHORIZED_WRITER, e.getStatusCode()), e.getStatusCode());
+    }
+
     // @Validated 에러 출력
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> globalValidatedExHandle(MethodArgumentNotValidException e) {
