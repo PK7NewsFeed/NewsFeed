@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
 
 @Entity
 @Table(name = "commentlike")

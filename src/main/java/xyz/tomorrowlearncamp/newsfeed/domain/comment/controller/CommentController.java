@@ -14,8 +14,6 @@ import xyz.tomorrowlearncamp.newsfeed.domain.comment.service.CommentService;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.dto.*;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/comments")

@@ -66,14 +66,14 @@ public class AuthController {
         HttpSession session = httpServletRequest.getSession();
         session.setAttribute(Const.LOGIN_USER, responseDto);
 
-        return ResponseEntity.ok(responseDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @PostMapping("/logout")
     @Operation(summary = "로그아웃")
     @ApiResponse(responseCode = "200", description = "로그아웃 성공")
     @ApiResponse(responseCode = "400", description = "로그아웃된 사용자")
-    public ResponseEntity<LogoutUserResponseDto> logout(
+    public ResponseEntity<Void> logout(
             HttpServletRequest httpServletRequest
     ) {
         // 기존 세션 확인
@@ -83,8 +83,6 @@ public class AuthController {
             session.invalidate(); // 세션 삭제
         }
 
-        LogoutUserResponseDto responseDto = new LogoutUserResponseDto("success");
-
-        return ResponseEntity.ok(responseDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
