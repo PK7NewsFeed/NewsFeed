@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.comment_like.dto;
+package xyz.tomorrowlearncamp.newsfeed.domain.commentlike.dto;
 
 import lombok.Getter;
 

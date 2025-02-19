@@ -1,17 +1,14 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.comment_like.service;
+package xyz.tomorrowlearncamp.newsfeed.domain.commentlike.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.repository.CommentRepository;
-import xyz.tomorrowlearncamp.newsfeed.domain.comment_like.repository.CommentLikeRepository;
+import xyz.tomorrowlearncamp.newsfeed.domain.commentlike.repository.CommentLikeRepository;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.repository.UsersRepository;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor

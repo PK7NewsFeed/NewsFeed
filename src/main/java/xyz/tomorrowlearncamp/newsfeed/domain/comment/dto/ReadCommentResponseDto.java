@@ -1,5 +1,6 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.comment.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 
@@ -29,6 +30,7 @@ public class ReadCommentResponseDto {
 
     private final LocalDateTime updatedAt;
 
+    @Builder
     public ReadCommentResponseDto(Long id, Long userId, Long feedId, Long parentCommentId, String username, String feedname, String content, int likeCount, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
@@ -43,18 +45,18 @@ public class ReadCommentResponseDto {
     }
 
     public static ReadCommentResponseDto toDto(Comment comment, int likeCount) {
-        return new ReadCommentResponseDto(
-                comment.getId(),
-                comment.getUser().getId(),
-                comment.getNewsFeed().getId(),
-                comment.getParentComment() != null ? comment.getParentComment().getId() : null,
-                comment.getUser().getUsername(),
-                comment.getNewsFeed().getTitle(),
-                comment.getContent(),
-                likeCount,
-                comment.getCreatedAt(),
-                comment.getUpdatedAt()
-        );
+        return ReadCommentResponseDto.builder()
+                .id(comment.getId())
+                .content(comment.getContent())
+                .updatedAt(comment.getUpdatedAt())
+                .createdAt(comment.getCreatedAt())
+                .feedId(comment.getNewsFeed().getId())
+                .feedname(comment.getNewsFeed().getTitle())
+                .parentCommentId(comment.getParentComment().getId())
+                .userId(comment.getUser().getId())
+                .username(comment.getUser().getUsername())
+                .likeCount(likeCount)
+                .build();
     }
 
 

@@ -3,21 +3,20 @@ package xyz.tomorrowlearncamp.newsfeed.domain.comment.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.dto.CreateCommentRequestDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.dto.CreateCommentResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.dto.ReadCommentResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.dto.UpdateCommentResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.repository.CommentRepository;
-import xyz.tomorrowlearncamp.newsfeed.domain.comment_like.service.CommentLikeService;
+import xyz.tomorrowlearncamp.newsfeed.domain.commentlike.service.CommentLikeService;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.service.NewsFeedService;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.service.UsersService;
+import xyz.tomorrowlearncamp.newsfeed.global.exception.LoginUserException;
 
 
 @Service
@@ -65,7 +64,7 @@ public class CommentService {
         Comment comment = commentRepository.findByIdOrElseThrow(commentId);
         // 세션 userId와 수정하려는 댓글의 userId 비교
         if (!userId.equals(comment.getUser().getId())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다");
+            throw new LoginUserException();
         }
 
         int likeCount = commentLikeService.getCountCommentLikes(commentId);
@@ -89,7 +88,7 @@ public class CommentService {
         Comment comment = commentRepository.findByIdOrElseThrow(commentId);
         // 세션 userId와 삭제하려는 댓글의 userId 비교
         if (!userId.equals(comment.getUser().getId())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "삭제 권한이 없습니다");
+            throw new LoginUserException();
         }
         commentRepository.delete(comment);
     }
