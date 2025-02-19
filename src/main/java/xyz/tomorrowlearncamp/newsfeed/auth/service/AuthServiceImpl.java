@@ -6,15 +6,11 @@ import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.SignUpUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.repository.UsersRepository;
-import xyz.tomorrowlearncamp.newsfeed.domain.user.service.UsersService;
 import xyz.tomorrowlearncamp.newsfeed.global.config.PasswordEncoder;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.enums.Gender;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.DuplicateEmailException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.InvalidPasswordOrEmailException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
-import xyz.tomorrowlearncamp.newsfeed.global.util.JwtUtil;
-
-import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Service
@@ -24,8 +20,6 @@ public class AuthServiceImpl implements AuthService {
     private final UsersRepository usersRepository;
 
     private final PasswordEncoder passwordEncoder;
-
-    private final JwtUtil jwtUtil;
 
     @Override
     public SignUpUserResponseDto signUp(String email, String password, String username, Gender gender, LocalDate birthDate) {
@@ -74,22 +68,6 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
-    @Override
-    public String jwtLogin(String email, String password) {
-
-        Users findUser = usersRepository.findByEmail(email).orElseThrow(
-                NotFoundUserException::new
-        );
-
-        if (!passwordEncoder.matches(password, findUser.getPassword())) { // 비밀번호가 다른 경우
-            throw new InvalidPasswordOrEmailException();
-        }
-
-        // xh
-        String token = jwtUtil.generateToken(findUser.getId(), findUser.getEmail());
-
-        return token;
-    }
 
     @Override
     public boolean existsByEmail(String email) {
