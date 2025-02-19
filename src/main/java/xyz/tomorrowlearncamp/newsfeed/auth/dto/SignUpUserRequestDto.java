@@ -8,30 +8,30 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.enums.Gender;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
-import xyz.tomorrowlearncamp.newsfeed.global.etc.ErrorMessage;
+import xyz.tomorrowlearncamp.newsfeed.global.etc.DtoErrorMessage;
 import java.time.LocalDate;
 
 @Getter
 @RequiredArgsConstructor
 public class SignUpUserRequestDto {
-    @NotNull(message = ErrorMessage.EMPTY_CONTENT)
-    @Email(message = ErrorMessage.INVALID_EMAIL_FORMAT)
-    @Pattern(regexp = Const.EMAIL_REGEX, message = ErrorMessage.INVALID_EMAIL_FORMAT)
+    @NotNull(message = DtoErrorMessage.EMPTY_CONTENT)
+    @Email(message = DtoErrorMessage.INVALID_EMAIL_FORMAT)
+    @Pattern(regexp = Const.EMAIL_REGEX, message = DtoErrorMessage.INVALID_EMAIL_FORMAT)
     @Size(min = 8, max = 30)
     private final String email;
 
     @NotNull
     @Size(min = 8, max = 20)
-    @Pattern(regexp = Const.PASSWORD_REGEX, message = ErrorMessage.INVALID_PASSWORD_FORMAT)
+    @Pattern(regexp = Const.PASSWORD_REGEX, message = DtoErrorMessage.INVALID_PASSWORD_FORMAT)
     private final String password;
 
     @NotNull
     @Size(min = 1, max = 10)
     private final String username;
 
-    @NotNull(message = ErrorMessage.MISSING_GENDER)
+    @NotNull(message = DtoErrorMessage.MISSING_GENDER)
     private final Gender gender;
 
-    @NotNull(message = ErrorMessage.MISSING_BIRTHDATE)
+    @NotNull(message = DtoErrorMessage.MISSING_BIRTHDATE)
     private final LocalDate birthDate;
 }
