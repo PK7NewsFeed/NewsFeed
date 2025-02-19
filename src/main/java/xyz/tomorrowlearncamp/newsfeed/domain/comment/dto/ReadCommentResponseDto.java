@@ -1,5 +1,6 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.comment.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 
@@ -26,7 +27,8 @@ public class ReadCommentResponseDto {
     private final LocalDateTime createdAt;
 
     private final LocalDateTime updatedAt;
-
+     
+    @Builder
     public ReadCommentResponseDto(Long id, Long userId, Long feedId, Long parentCommentId, String username, String feedname, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;

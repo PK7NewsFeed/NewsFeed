@@ -18,7 +18,7 @@ public class FriendController {
     private final FriendService friendService;
 
     @PostMapping
-    public ResponseEntity<Void> addFriend(
+    public ResponseEntity<Void> saveFriend(
             @RequestParam Long userId,
             @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
     ) {
