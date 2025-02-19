@@ -45,7 +45,7 @@ public class ReadCommentResponseDto {
                 comment.getNewsFeed().getId(),
                 comment.getParentComment() != null ? comment.getParentComment().getId() : null,
                 comment.getUser().getUsername(),
-                comment.getNewsFeed().getFeedname(),
+                comment.getNewsFeed().getTitle(),
                 comment.getContent(),
                 comment.getCreatedAt(),
                 comment.getUpdatedAt()

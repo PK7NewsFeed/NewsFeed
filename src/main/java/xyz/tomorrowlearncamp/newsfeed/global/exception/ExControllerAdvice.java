@@ -15,35 +15,44 @@ public class ExControllerAdvice {
 
     // 이메일 중복 처리 핸들러
     @ExceptionHandler(DuplicateEmailException.class)
-    public ResponseEntity<ErrorCode> duplicateEmailExHandle(DuplicateEmailException e) {
-        return new ResponseEntity<>(ErrorCode.DUPLICATION_EMAIL, e.getStatusCode());
+    public ResponseEntity<ErrorMessage> duplicateEmailExHandle(DuplicateEmailException e) {
+        return new ResponseEntity<>(new ErrorMessage(ErrorCode.DUPLICATION_EMAIL, e.getStatusCode()), e.getStatusCode());
     }
 
     @ExceptionHandler(NotFoundUserException.class)
-    public ResponseEntity<ErrorCode> notFoundUserExHandle(NotFoundUserException e) {
-        return new ResponseEntity<>(ErrorCode.NOT_FOUND_USER, e.getStatusCode());
+    public ResponseEntity<ErrorMessage> notFoundUserExHandle(NotFoundUserException e) {
+        return new ResponseEntity<>(new ErrorMessage(ErrorCode.NOT_FOUND_USER, e.getStatusCode()), e.getStatusCode());
     }
 
     @ExceptionHandler(InvalidPasswordOrEmailException.class)
-    public ResponseEntity<ErrorCode> invalidPasswordOrEmailExHandle(InvalidPasswordOrEmailException e) {
-        return new ResponseEntity<>(ErrorCode.INVALID_EMAIL_PASSWORD, e.getStatusCode());
+    public ResponseEntity<ErrorMessage> invalidPasswordOrEmailExHandle(InvalidPasswordOrEmailException e) {
+        return new ResponseEntity<>(new ErrorMessage(ErrorCode.INVALID_EMAIL_PASSWORD, e.getStatusCode()), e.getStatusCode());
     }
 
     @ExceptionHandler(LoginUserException.class)
-    public ResponseEntity<ErrorCode> loginUserExHandle(LoginUserException e) {
-        return new ResponseEntity<>(ErrorCode.NOT_LOGIN, e.getStatusCode());
+    public ResponseEntity<ErrorMessage> loginUserExHandle(LoginUserException e) {
+        return new ResponseEntity<>(new ErrorMessage(ErrorCode.NOT_LOGIN, e.getStatusCode()), e.getStatusCode());
     }
 
     @ExceptionHandler(InvalidPasswordException.class)
-    public ResponseEntity<ErrorCode> invalidPasswordExHandleExhandle(InvalidPasswordException e) {
-        return new ResponseEntity<>(ErrorCode.INVALID_PASSWORD, e.getStatusCode());
+    public ResponseEntity<ErrorMessage> invalidPasswordExHandleExhandle(InvalidPasswordException e) {
+        return new ResponseEntity<>(new ErrorMessage(ErrorCode.INVALID_PASSWORD, e.getStatusCode()), e.getStatusCode());
     }
 
     @ExceptionHandler(MismatchPasswordException.class)
-    public ResponseEntity<ErrorCode> mismatchPaswwordException(MismatchPasswordException e) {
-        return new ResponseEntity<>(ErrorCode.MISMATCH_PASSWORD, e.getStatusCode());
+    public ResponseEntity<ErrorMessage> mismatchPaswwordException(MismatchPasswordException e) {
+        return new ResponseEntity<>(new ErrorMessage(ErrorCode.MISMATCH_PASSWORD, e.getStatusCode()), e.getStatusCode());
     }
 
+    @ExceptionHandler(NotFoundNewsFeedException.class)
+    public ResponseEntity<ErrorMessage> notFoundNewsFeedException(NotFoundNewsFeedException e) {
+        return new ResponseEntity<>(new ErrorMessage(ErrorCode.NOT_FOUND_NEWSFEED, e.getStatusCode()), e.getStatusCode());
+    }
+
+    @ExceptionHandler(SameAsCurrentPasswordException.class)
+    public ResponseEntity<ErrorMessage> sameAsCurrentPasswordException(SameAsCurrentPasswordException e) {
+        return new ResponseEntity<>(new ErrorMessage(ErrorCode.SAME_AS_CURRENT_PASSWORD, e.getStatusCode()), e.getStatusCode());
+    }
 
     // @Validated 에러 출력
     @ExceptionHandler(MethodArgumentNotValidException.class)

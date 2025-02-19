@@ -4,14 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.dto.UserResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
+import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.ResponseDto.ReadUsersResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.entity.Friend;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.enums.FriendRequestStatus;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.repository.FriendRepository;
+import xyz.tomorrowlearncamp.newsfeed.domain.users.service.UsersService;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,65 +18,63 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FriendService {
     private final FriendRepository friendRepository;
-    private final UsersRepository usersRepository;
+    private final UsersService usersService;
 
     @Transactional
     public void sendFriendRequest(Long requestUserId, Long receivedUserId) {
-        if(requestUserId.equals(receivedUserId)){
+
+        if (requestUserId.equals(receivedUserId)) {
             throw new NotFoundUserException();
         }
+        usersService.validateUserExists(requestUserId);
+        usersService.validateUserExists(receivedUserId);
 
-        Users requestUser = usersRepository.findById(requestUserId)
-                .orElseThrow(NotFoundUserException::new);
-
-        Users receivedUser = usersRepository.findById(receivedUserId)
-                .orElseThrow(NotFoundUserException::new);
-
-        Optional<Friend> existingRequest = friendRepository.findByRequestUserIdAndReceivedUserIdAndStatus(
-                receivedUser.getId(), requestUser.getId(), FriendRequestStatus.WAITING
+        Optional<Friend> existingRequest = friendRepository.findFriendshipRequest(
+                receivedUserId, requestUserId, FriendRequestStatus.WAITING
         );
 
         Friend friendRequest;
 
-        if(existingRequest.isPresent()) {
+        if (existingRequest.isPresent()) {
             friendRequest = existingRequest.get();
             friendRequest.setStatus(FriendRequestStatus.ACCEPTED);
         } else {
-            friendRequest = new Friend(requestUser.getId(), receivedUser.getId(), FriendRequestStatus.WAITING);
+            friendRequest = new Friend(requestUserId, receivedUserId, FriendRequestStatus.WAITING);
         }
         friendRepository.save(friendRequest);
     }
 
     @Transactional(readOnly = true)
     public List<UserResponseDto> getFriendRequest(Long userId, String status) {
-        Users user = usersRepository.findById(userId)
-                .orElseThrow(NotFoundUserException::new);
+        usersService.validateUserExists(userId);
 
-        List<Long> ResponseList = new ArrayList<>();
-
-        if(status.equals("WAITING")) {
-            ResponseList = friendRepository.findByReceivedUserIdAndStatus(user.getId(), FriendRequestStatus.WAITING)
+        List<Long> responseList = switch (FriendRequestStatus.valueOf(status)) {
+            case WAITING -> friendRepository.findReceivedRequests(userId, FriendRequestStatus.WAITING)
                     .stream()
                     .map(Friend::getRequestUserId)
                     .toList();
-        } else if (status.equals("ACCEPTED")) {
-            List<Long> receivedUsers = friendRepository.findByRequestUserIdAndStatus(user.getId(), FriendRequestStatus.ACCEPTED)
+            case ACCEPTED -> friendRepository.findAcceptedFriends(userId, FriendRequestStatus.ACCEPTED)
                     .stream()
-                    .map(Friend::getReceivedUserId)
+                    .map(friend -> friend.getRequestUserId().equals(userId) ? friend.getReceivedUserId() : friend.getRequestUserId())
                     .toList();
-            List<Long> requestUsers = friendRepository.findByReceivedUserIdAndStatus(user.getId(), FriendRequestStatus.ACCEPTED)
-                    .stream()
-                    .map(Friend::getRequestUserId)
-                    .toList();
-            ResponseList.addAll(receivedUsers);
-            ResponseList.addAll(requestUsers);
-        } else {
-            throw new NotFoundUserException();
-        }
+            default -> throw new NotFoundUserException();
+        };
 
-        List<Users> usersList = usersRepository.findAllById(ResponseList);
-        return usersList.stream()
-                .map(users -> new UserResponseDto(users.getId(), users.getUsername(), users.getEmail()))
+        return responseList.stream()
+                .map(id -> {
+                    ReadUsersResponseDto user = usersService.getUserById(id);
+                    return UserResponseDto.builder()
+                            .id(user.getId())
+                            .username(user.getUsername())
+                            .email(user.getEmail())
+                            .build();
+                })
                 .toList();
+    }
+
+    public void delete(Long requestUserId, Long userId) {
+        Friend friend = friendRepository.findFriendship(requestUserId, userId, FriendRequestStatus.ACCEPTED).orElseThrow(NotFoundUserException::new);
+
+        friendRepository.delete(friend);
     }
 }

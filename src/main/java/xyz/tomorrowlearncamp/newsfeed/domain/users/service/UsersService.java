@@ -14,6 +14,7 @@ import xyz.tomorrowlearncamp.newsfeed.global.config.PasswordEncoder;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.InvalidPasswordException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.MismatchPasswordException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
+import xyz.tomorrowlearncamp.newsfeed.global.exception.SameAsCurrentPasswordException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -99,7 +100,10 @@ public class UsersService {
         if (!dto.getNewPassword().equals(dto.getNewPasswordCheck())) {
             throw new MismatchPasswordException();
         }
-
+        // 현재 비밀번호와 새 비밀번호가 동일한 경우
+        if (dto.getOldPassword().equals(dto.getNewPassword())){
+            throw new SameAsCurrentPasswordException();
+        }
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(dto.getNewPassword());
         users.updatePassword(encodedPassword);
@@ -115,5 +119,11 @@ public class UsersService {
         }
 
         users.delete();
+    }
+
+    public void validateUserExists(Long userId) {
+        if (!usersRepository.existsById(userId)) {
+            throw new NotFoundUserException();
+        }
     }
 }

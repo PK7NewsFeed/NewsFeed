@@ -18,13 +18,13 @@ public class FriendController {
     private final FriendService friendService;
 
     @PostMapping
-    public ResponseEntity<String> addFriend(
+    public ResponseEntity<Void> addFriend(
             @RequestParam Long userId,
             @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
     ) {
         Long requestUserId = loginUser.getId();
         friendService.sendFriendRequest(requestUserId, userId);
-        return new ResponseEntity<>("Success", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping
@@ -34,5 +34,15 @@ public class FriendController {
     ) {
         Long requestUserId = loginUser.getId();
         return friendService.getFriendRequest(requestUserId, status);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteFriend(
+            @RequestParam Long userId,
+            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
+    ) {
+        Long requestUserId = loginUser.getId();
+        friendService.delete(requestUserId, userId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
