@@ -1,6 +1,10 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto.CreateNewsFeedRequestDto;
@@ -9,6 +13,7 @@ import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.CreateNew
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.ReadNewsFeedResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.UpdateNewsFeedResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.enums.SortOrder;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.repository.NewsFeedRepository;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
@@ -41,8 +46,10 @@ public class NewsFeedService {
     }
 
     @Transactional(readOnly = true)
-    public List<ReadNewsFeedResponseDto> findAll() {
-        List<ReadNewsFeedResponseDto> responseDtos = newsFeedRepository.findAll().stream()
+    public Page<ReadNewsFeedResponseDto> findAll(int page, int size, SortOrder sortOrder) {
+        Pageable pageable = PageRequest.of(page - 1, size, sortOrder.toSort());
+
+        return newsFeedRepository.findAll(pageable)
                 .map(item -> new ReadNewsFeedResponseDto(
                         item.getId(),
                         item.getTitle(),
@@ -50,9 +57,7 @@ public class NewsFeedService {
                         item.getUser().getId(),
                         item.getCreatedAt(),
                         item.getUpdatedAt()
-                ))
-                .toList();
-        return responseDtos;
+                ));
     }
 
     @Transactional(readOnly = true)

@@ -1,6 +1,7 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -11,6 +12,7 @@ import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto.UpdateNews
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.CreateNewsFeedResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.ReadNewsFeedResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.UpdateNewsFeedResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.enums.SortOrder;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.service.NewsFeedService;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 
@@ -32,8 +34,12 @@ public class NewsFeedController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ReadNewsFeedResponseDto>> findAll() {
-        return new ResponseEntity<>(newsFeedService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Page<ReadNewsFeedResponseDto>> findAll(
+            @RequestParam(required = false, defaultValue = "1") int page,
+            @RequestParam(required = false, defaultValue = "10") int size,
+            @RequestParam(required = false, defaultValue = "CREATED_AT_DESC") SortOrder sortOrder
+            ) {
+        return new ResponseEntity<>(newsFeedService.findAll(page, size, sortOrder), HttpStatus.OK);
     }
 
     @GetMapping("/{newsfeedId}")
