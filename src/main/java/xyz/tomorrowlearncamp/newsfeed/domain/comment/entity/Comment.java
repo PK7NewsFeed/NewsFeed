@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.global.entity.BaseEntity;
 
 @Getter
@@ -47,4 +47,5 @@ public class Comment extends BaseEntity {
     public void updateContent(String newContent) {
         this.content = newContent;
     }
+
 }

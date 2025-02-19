@@ -3,16 +3,13 @@ package xyz.tomorrowlearncamp.newsfeed.domain.newsfeedlike.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.ReadNewsFeedResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.repository.NewsFeedRepository;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsfeedlike.repository.NewsFeedLikeRepository;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.repository.UsersRepository;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundNewsFeedException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

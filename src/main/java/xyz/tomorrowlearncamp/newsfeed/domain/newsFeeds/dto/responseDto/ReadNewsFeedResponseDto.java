@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 public class ReadNewsFeedResponseDto {
@@ -14,8 +15,8 @@ public class ReadNewsFeedResponseDto {
     private final String title;
     private final String content;
     private final Long uesrId;
-    private final Timestamp createdAt;
-    private final Timestamp updatedAt;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
     private final int likeCount;
 
     @Builder
@@ -24,8 +25,8 @@ public class ReadNewsFeedResponseDto {
             String title,
             String content,
             Long userId,
-            Timestamp createdAt,
-            Timestamp updatedAt,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt,
             int likeCount
     ) {
         this.id = id;

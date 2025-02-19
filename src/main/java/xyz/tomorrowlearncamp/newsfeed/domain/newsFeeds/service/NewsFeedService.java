@@ -16,8 +16,8 @@ import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.enums.SortOrder;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.repository.NewsFeedRepository;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsfeedlike.service.NewsFeedLikeService;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.repository.UsersRepository;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundNewsFeedException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.UnauthorizedWriterException;
@@ -97,6 +97,13 @@ public class NewsFeedService {
                 newsFeed.getUpdatedAt(),
                 likeCount
         );
+    }
+
+    @Transactional(readOnly = true)
+    public NewsFeed findEntityById(Long postId) {
+        NewsFeed newsFeed = newsFeedRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID에 맞는 뉴스피드가 없습니다."));
+        return newsFeed;
     }
 
     @Transactional

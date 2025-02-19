@@ -1,16 +1,16 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.newsfeedlike.entity;
+package xyz.tomorrowlearncamp.newsfeed.domain.commentlike.Entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
+import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
 
-@Getter
 @Entity
+@Table(name = "commentlike")
+@Getter
 @NoArgsConstructor
-@Table(name = "newsfeedlike")
-public class NewsFeedLike {
+public class CommentLike {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,11 +20,11 @@ public class NewsFeedLike {
     private Users user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "newsfeed_id")
-    private NewsFeed newsFeed;
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 
-    public NewsFeedLike(Users user, NewsFeed newsFeed) {
+    public CommentLike(Users user, Comment comment) {
         this.user = user;
-        this.newsFeed = newsFeed;
+        this.comment = comment;
     }
 }
