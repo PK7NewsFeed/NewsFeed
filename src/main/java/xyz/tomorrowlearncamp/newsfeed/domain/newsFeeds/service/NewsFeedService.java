@@ -3,14 +3,17 @@ package xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto.NewsFeedRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto.NewsFeedUpdateRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.NewsFeedResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.NewsFeedUpdateResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto.CreateNewsFeedRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto.UpdateNewsFeedRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.CreateNewsFeedResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.ReadNewsFeedResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.UpdateNewsFeedResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.repository.NewsFeedRepository;
+import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
+import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
+import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,53 +21,76 @@ import java.util.List;
 public class NewsFeedService {
 
     private final NewsFeedRepository newsFeedRepository;
+    private final UsersRepository usersRepository;
 
     @Transactional
-    public NewsFeedResponseDto save(NewsFeedRequestDto requestDto) {
-        NewsFeed newsFeed = new NewsFeed(requestDto.getTitle(), requestDto.getContent());
+    public CreateNewsFeedResponseDto save(CreateNewsFeedRequestDto requestDto, Long userId) {
+        Users user = usersRepository.findById(userId).orElseThrow(NotFoundUserException::new);
+        NewsFeed newsFeed = new NewsFeed(requestDto.getTitle(), requestDto.getContent(), user);
         NewsFeed savedNewsFeed = newsFeedRepository.save(newsFeed);
-        return new NewsFeedResponseDto(savedNewsFeed.getId(), savedNewsFeed.getTitle(), savedNewsFeed.getContent());
+        return new CreateNewsFeedResponseDto(
+                savedNewsFeed.getId(),
+                savedNewsFeed.getTitle(),
+                savedNewsFeed.getContent(),
+                user.getId(),
+                savedNewsFeed.getCreatedAt(),
+                savedNewsFeed.getUpdatedAt()
+        );
     }
 
     @Transactional(readOnly = true)
-    public List<NewsFeedResponseDto> findAll() {
-//        List<NewsFeed> newsFeeds = newsFeedRepository.findAll();
-//
-//        List<NewsFeedResponseDto> responseDtos = new ArrayList<>();
-//        for (NewsFeed newsFeed : newsFeeds) {
-//            responseDtos.add(new NewsFeedResponseDto(newsFeed.getId(), newsFeed.getTitle(), newsFeed.getContent()));
-//        }
-        List<NewsFeedResponseDto> responseDtos = newsFeedRepository.findAll().stream()
-                .map(item -> new NewsFeedResponseDto(item.getId(), item.getTitle(), item.getContent()))
+    public List<ReadNewsFeedResponseDto> findAll() {
+        List<ReadNewsFeedResponseDto> responseDtos = newsFeedRepository.findAll().stream()
+                .map(item -> new ReadNewsFeedResponseDto(
+                        item.getId(),
+                        item.getTitle(),
+                        item.getContent(),
+                        item.getUser().getId(),
+                        item.getCreatedAt(),
+                        item.getUpdatedAt()
+                ))
                 .toList();
         return responseDtos;
     }
 
     @Transactional(readOnly = true)
-    public NewsFeedResponseDto findById(Long postId) {
-        NewsFeed newsFeed = newsFeedRepository.findById(postId).orElseThrow(
+    public ReadNewsFeedResponseDto findById(Long newsfeedId) {
+        NewsFeed newsFeed = newsFeedRepository.findById(newsfeedId).orElseThrow(
                 () -> new IllegalArgumentException("해당 ID에 맞는 뉴스피드가 없습니다.")
         );
 
-        return new NewsFeedResponseDto(newsFeed.getId(), newsFeed.getTitle(), newsFeed.getContent());
+        return new ReadNewsFeedResponseDto(
+                newsFeed.getId(),
+                newsFeed.getTitle(),
+                newsFeed.getContent(),
+                newsFeed.getUser().getId(),
+                newsFeed.getCreatedAt(),
+                newsFeed.getUpdatedAt()
+        );
     }
 
     @Transactional
-    public NewsFeedUpdateResponseDto update(Long postId, NewsFeedUpdateRequestDto requestDto) {
-        NewsFeed newsFeed = newsFeedRepository.findById(postId).orElseThrow(
-                () -> new IllegalArgumentException("해당 ID에 맞는 뉴스피드가 없습니다.")
+    public UpdateNewsFeedResponseDto update(Long newsfeedId, UpdateNewsFeedRequestDto requestDto, Long userId) {
+        NewsFeed newsFeed = newsFeedRepository.findById(newsfeedId).orElseThrow(
         );
 
-        newsFeed.updateTitle(requestDto.getTitle());
-        return new NewsFeedUpdateResponseDto(newsFeed.getId(), newsFeed.getTitle());
-    }
-
-    @Transactional
-    public void deleteById(Long postId) {
-        if (!newsFeedRepository.existsById(postId)) {
-            throw new IllegalArgumentException("해당 ID에 맞는 뉴스피드가 없습니다.");
+        if (newsFeed.getUser().getId() != userId) {
+            throw new IllegalArgumentException("작성자가 아닙니다.");
         }
 
-        newsFeedRepository.deleteById(postId);
+        if (requestDto.getTitle() != null && !requestDto.getTitle().isBlank()) {
+            newsFeed.updateTitle(requestDto.getTitle());
+        }
+
+        if (requestDto.getContent() != null && !requestDto.getContent().isBlank()) {
+            newsFeed.updateContent(requestDto.getContent());
+        }
+        return new UpdateNewsFeedResponseDto(newsFeed.getId(), newsFeed.getTitle());
+    }
+
+    @Transactional
+    public void deleteById(Long newsfeedId, Long userId) {
+        NewsFeed newsFeed = newsFeedRepository.findById(newsfeedId).orElseThrow(() -> new IllegalArgumentException());
+        newsFeed.delete();
     }
 }
