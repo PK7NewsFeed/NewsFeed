@@ -21,6 +21,8 @@ public class UpdateCommentResponseDto {
 
     private final String content;
 
+    private final int likeCount;
+
     private final Long parentCommentId;
 
     private final LocalDateTime createdAt;
@@ -28,13 +30,14 @@ public class UpdateCommentResponseDto {
     private final LocalDateTime updatedAt;
 
     @Builder
-    public UpdateCommentResponseDto(Long id, Long userId, Long feedId, String username, String feedname, String content, Long parentCommentId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public UpdateCommentResponseDto(Long id, Long userId, Long feedId, String username, String feedname, String content, int likeCount, Long parentCommentId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.feedId = feedId;
         this.username = username;
         this.feedname = feedname;
         this.content = content;
+        this.likeCount = likeCount;
         this.parentCommentId = parentCommentId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

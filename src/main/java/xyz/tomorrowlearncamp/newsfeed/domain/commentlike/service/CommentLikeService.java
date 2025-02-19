@@ -1,11 +1,11 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.comment_like.service;
+package xyz.tomorrowlearncamp.newsfeed.domain.commentlike.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.repository.CommentRepository;
-import xyz.tomorrowlearncamp.newsfeed.domain.comment_like.repository.CommentLikeRepository;
+import xyz.tomorrowlearncamp.newsfeed.domain.commentlike.repository.CommentLikeRepository;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.repository.UsersRepository;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
@@ -28,8 +28,10 @@ public class CommentLikeService {
 
         commentLikeRepository.toggle(comment, user);
 
-        return !isLiked;
+        return isLiked;
     }
 
-
+    public int getCountCommentLikes(Long commentId) {
+        return commentLikeRepository.countCommentLikeByCommentId(commentId);
+    }
 }

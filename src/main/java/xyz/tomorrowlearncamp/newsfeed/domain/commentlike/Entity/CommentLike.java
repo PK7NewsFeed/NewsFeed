@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.comment_like.Entity;
+package xyz.tomorrowlearncamp.newsfeed.domain.commentlike.Entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

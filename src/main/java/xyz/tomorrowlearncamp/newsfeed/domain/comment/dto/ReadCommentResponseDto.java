@@ -24,12 +24,14 @@ public class ReadCommentResponseDto {
 
     private final Long parentCommentId;
 
+    private final int likeCount;
+
     private final LocalDateTime createdAt;
 
     private final LocalDateTime updatedAt;
-     
+
     @Builder
-    public ReadCommentResponseDto(Long id, Long userId, Long feedId, Long parentCommentId, String username, String feedname, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ReadCommentResponseDto(Long id, Long userId, Long feedId, Long parentCommentId, String username, String feedname, String content, int likeCount, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.feedId = feedId;
@@ -37,21 +39,25 @@ public class ReadCommentResponseDto {
         this.username = username;
         this.feedname = feedname;
         this.content = content;
+        this.likeCount = likeCount;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public static ReadCommentResponseDto toDto(Comment comment) {
-        return new ReadCommentResponseDto(
-                comment.getId(),
-                comment.getUser().getId(),
-                comment.getNewsFeed().getId(),
-                comment.getParentComment() != null ? comment.getParentComment().getId() : null,
-                comment.getUser().getUsername(),
-                comment.getNewsFeed().getTitle(),
-                comment.getContent(),
-                comment.getCreatedAt(),
-                comment.getUpdatedAt()
-        );
+    public static ReadCommentResponseDto toDto(Comment comment, int likeCount) {
+        return ReadCommentResponseDto.builder()
+                .id(comment.getId())
+                .content(comment.getContent())
+                .updatedAt(comment.getUpdatedAt())
+                .createdAt(comment.getCreatedAt())
+                .feedId(comment.getNewsFeed().getId())
+                .feedname(comment.getNewsFeed().getTitle())
+                .parentCommentId(comment.getParentComment().getId())
+                .userId(comment.getUser().getId())
+                .username(comment.getUser().getUsername())
+                .likeCount(likeCount)
+                .build();
     }
+
+
 }

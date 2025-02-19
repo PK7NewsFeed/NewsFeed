@@ -23,6 +23,8 @@ public class CreateCommentResponseDto {
 
     private final Long parentCommentId;
 
+    private final int likeCount = 0;
+
     private final LocalDateTime createdAt;
 
     private final LocalDateTime updatedAt;
