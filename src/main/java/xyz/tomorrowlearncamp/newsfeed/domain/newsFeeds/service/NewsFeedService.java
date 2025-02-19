@@ -49,6 +49,13 @@ public class NewsFeedService {
         return new NewsFeedResponseDto(newsFeed.getId(), newsFeed.getTitle(), newsFeed.getContent());
     }
 
+    @Transactional(readOnly = true)
+    public NewsFeed findEntityById(Long postId) {
+        NewsFeed newsFeed = newsFeedRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID에 맞는 뉴스피드가 없습니다."));
+        return newsFeed;
+    }
+
     @Transactional
     public NewsFeedUpdateResponseDto update(Long postId, NewsFeedUpdateRequestDto requestDto) {
         NewsFeed newsFeed = newsFeedRepository.findById(postId).orElseThrow(

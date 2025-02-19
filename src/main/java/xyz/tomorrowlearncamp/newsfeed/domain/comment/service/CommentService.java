@@ -17,8 +17,10 @@ import xyz.tomorrowlearncamp.newsfeed.domain.comment_like.repository.CommentLike
 import xyz.tomorrowlearncamp.newsfeed.domain.comment_like.service.CommentLikeService;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.repository.NewsFeedRepository;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.service.NewsFeedService;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
+import xyz.tomorrowlearncamp.newsfeed.domain.users.service.UsersService;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundNewsFeedException;
 
@@ -29,20 +31,17 @@ import java.util.List;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final UsersRepository usersRepository;
-    private final NewsFeedRepository newsFeedRepository;
+    private final NewsFeedService newsFeedService;
     private final CommentLikeService commentLikeService;
-    private final CommentLikeRepository commentLikeRepository;
+    private final UsersService usersService;
 
 
-    public CreateCommentResponseDto save(CreateCommentRequestDto requestDto, Long sessionUserId) {
+    public CreateCommentResponseDto save(CreateCommentRequestDto requestDto, Long userId) {
         int depth = 0;
 
-        Users user = usersRepository.findById(sessionUserId)
-                .orElseThrow(NotFoundUserException::new);
+        Users user = usersService.getUserEntityById(userId);
 
-        NewsFeed newsFeed = newsFeedRepository.findById(requestDto.getNewsFeedId())
-                .orElseThrow(NotFoundNewsFeedException::new);
+        NewsFeed newsFeed = newsFeedService.findEntityById(requestDto.getNewsFeedId());
 
         // parentComment 있는지 확인
         Comment parentComment = null;
@@ -75,7 +74,7 @@ public class CommentService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다");
         }
 
-        int likeCount = commentLikeRepository.countCommentLikeByCommentId(commentId);
+        int likeCount = commentLikeService.getCountCommentLikes(commentId);
         comment.updateContent(newContent);
         return new UpdateCommentResponseDto(
                 comment.getId(),

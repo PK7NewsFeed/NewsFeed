@@ -40,6 +40,11 @@ public class UsersService {
                 .build();
     }
 
+    public Users getUserEntityById(Long userId) {
+        return usersRepository.findById(userId)
+                .orElseThrow(NotFoundUserException::new);
+    }
+
     public List<ReadUsersResponseDto> getUsers() {
         return usersRepository.findAll().stream()
                 .map(users -> ReadUsersResponseDto.builder()
