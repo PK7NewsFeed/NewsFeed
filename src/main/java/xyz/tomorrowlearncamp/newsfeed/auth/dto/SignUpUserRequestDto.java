@@ -6,11 +6,11 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import xyz.tomorrowlearncamp.newsfeed.global.enums.Gender;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.enums.Gender;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.ErrorMessage;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Getter
 @RequiredArgsConstructor
@@ -34,5 +34,5 @@ public class SignUpUserRequestDto {
     private final Gender gender;
 
     @NotNull(message = ErrorMessage.MISSING_BIRTHDATE)
-    private final Timestamp birthDate;
+    private final LocalDate birthDate;
 }

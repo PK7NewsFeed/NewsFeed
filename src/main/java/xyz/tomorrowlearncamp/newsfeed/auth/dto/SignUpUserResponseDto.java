@@ -2,7 +2,6 @@ package xyz.tomorrowlearncamp.newsfeed.auth.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-
 import java.time.LocalDateTime;
 
 @Getter

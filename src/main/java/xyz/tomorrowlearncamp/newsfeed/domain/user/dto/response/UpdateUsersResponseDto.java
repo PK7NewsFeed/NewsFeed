@@ -1,11 +1,12 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.users.dto.ResponseDto;
+package xyz.tomorrowlearncamp.newsfeed.domain.user.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import xyz.tomorrowlearncamp.newsfeed.global.enums.Gender;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.enums.Gender;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 public class UpdateUsersResponseDto {
@@ -17,14 +18,14 @@ public class UpdateUsersResponseDto {
 
     private Gender gender;
 
-    private Timestamp birthDate;
+    private LocalDate birthDate;
 
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
 
     @Builder()
-    public UpdateUsersResponseDto(Long id, String email, String username, Gender gender, Timestamp birthDate, Timestamp createdAt, Timestamp updatedAt){
+    public UpdateUsersResponseDto(Long id, String email, String username, Gender gender, LocalDate birthDate, LocalDateTime createdAt, LocalDateTime updatedAt){
         this.id = id;
         this.email = email;
         this.username = username;
