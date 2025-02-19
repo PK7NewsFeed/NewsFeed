@@ -5,9 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.ReadNewsFeedResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsfeedlike.dto.NewsFeedLikeRequestDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsfeedlike.service.NewsFeedLikeService;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,11 +20,19 @@ public class NewsFeedLikeController {
     private final NewsFeedLikeService newsFeedLikeService;
 
     @PostMapping("/{newsfeedsId}/like")
-    public ResponseEntity<String> toggleLike(
+    public ResponseEntity<Void> toggleLike(
             @PathVariable Long newsfeedsId,
             @SessionAttribute(name =Const.LOGIN_USER)LoginUserResponseDto loginUser
     ) {
-        boolean isLiked = newsFeedLikeService.toggleLike(newsfeedsId, loginUser.getId());
-        return new ResponseEntity<>(isLiked ? "좋아요" : "좋아요 취소", HttpStatus.OK);
+        newsFeedLikeService.toggleLike(newsfeedsId, loginUser.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+
+//    @GetMapping("/like")
+//    public ResponseEntity<List<ReadNewsFeedResponseDto>> getLikeNewsFeeds(
+//            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
+//    ) {
+//
+//        return new ResponseEntity<>(newsFeedLikeService.getLikeNewsFeeds(loginUser.getId()), HttpStatus.OK);
+//    }
 }

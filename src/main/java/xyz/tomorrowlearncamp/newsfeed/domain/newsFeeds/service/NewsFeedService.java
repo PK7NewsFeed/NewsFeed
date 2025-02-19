@@ -15,6 +15,7 @@ import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.UpdateNew
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.enums.SortOrder;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.repository.NewsFeedRepository;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeedlike.service.NewsFeedLikeService;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundNewsFeedException;
@@ -30,6 +31,7 @@ public class NewsFeedService {
 
     private final NewsFeedRepository newsFeedRepository;
     private final UsersRepository usersRepository;
+    private final NewsFeedLikeService newsFeedLikeService;
 
     @Transactional
     public CreateNewsFeedResponseDto save(CreateNewsFeedRequestDto requestDto, Long userId) {
@@ -52,62 +54,48 @@ public class NewsFeedService {
 
         if (startDate != null && endDate != null) {
             return newsFeedRepository.findAllByCreatedAtBetween(startDate.atStartOfDay(), endDate.atTime(23,59,59), pageable)
-                    .map(item -> new ReadNewsFeedResponseDto(
-                            item.getId(),
-                            item.getTitle(),
-                            item.getContent(),
-                            item.getUser().getId(),
-                            item.getCreatedAt(),
-                            item.getUpdatedAt()
-                    ));
+                    .map(item -> {
+                        int likeCount = newsFeedLikeService.getCountNewsFeedLike(item.getId());
+                        return ReadNewsFeedResponseDto.toDto(item, likeCount);
+                    });
         }
 
         if (startDate != null) {
             return newsFeedRepository.findAllByCreatedAtAfter(startDate.atStartOfDay(), pageable)
-                    .map(item -> new ReadNewsFeedResponseDto(
-                            item.getId(),
-                            item.getTitle(),
-                            item.getContent(),
-                            item.getUser().getId(),
-                            item.getCreatedAt(),
-                            item.getUpdatedAt()
-                    ));
+                    .map(item -> {
+                        int likeCount = newsFeedLikeService.getCountNewsFeedLike(item.getId());
+                        return ReadNewsFeedResponseDto.toDto(item, likeCount);
+                    });
         }
 
         if (endDate != null) {
             return newsFeedRepository.findAllByCreatedAtBefore(endDate.atTime(23,59,59), pageable)
-                    .map(item -> new ReadNewsFeedResponseDto(
-                            item.getId(),
-                            item.getTitle(),
-                            item.getContent(),
-                            item.getUser().getId(),
-                            item.getCreatedAt(),
-                            item.getUpdatedAt()
-                    ));
+                    .map(item -> {
+                        int likeCount = newsFeedLikeService.getCountNewsFeedLike(item.getId());
+                        return ReadNewsFeedResponseDto.toDto(item, likeCount);
+                    });
         }
 
         return newsFeedRepository.findAll(pageable)
-                .map(item -> new ReadNewsFeedResponseDto(
-                        item.getId(),
-                        item.getTitle(),
-                        item.getContent(),
-                        item.getUser().getId(),
-                        item.getCreatedAt(),
-                        item.getUpdatedAt()
-                ));
+                .map(item -> {
+                    int likeCount = newsFeedLikeService.getCountNewsFeedLike(item.getId());
+                    return ReadNewsFeedResponseDto.toDto(item, likeCount);
+                });
     }
 
     @Transactional(readOnly = true)
     public ReadNewsFeedResponseDto findById(Long newsfeedId) {
         NewsFeed newsFeed = newsFeedRepository.findById(newsfeedId).orElseThrow(NotFoundNewsFeedException::new);
 
+        int likeCount = newsFeedLikeService.getCountNewsFeedLike(newsfeedId);
         return new ReadNewsFeedResponseDto(
                 newsFeed.getId(),
                 newsFeed.getTitle(),
                 newsFeed.getContent(),
                 newsFeed.getUser().getId(),
                 newsFeed.getCreatedAt(),
-                newsFeed.getUpdatedAt()
+                newsFeed.getUpdatedAt(),
+                likeCount
         );
     }
 
