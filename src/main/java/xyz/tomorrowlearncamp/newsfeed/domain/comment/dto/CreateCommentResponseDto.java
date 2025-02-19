@@ -1,6 +1,5 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.comment.dto;
 
-import lombok.Builder;
 import lombok.Getter;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 
