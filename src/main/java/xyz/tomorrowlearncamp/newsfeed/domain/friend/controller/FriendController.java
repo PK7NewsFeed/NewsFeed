@@ -8,6 +8,8 @@ import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.dto.UserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.friend.service.FriendService;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
+import xyz.tomorrowlearncamp.newsfeed.global.etc.JwtProperties;
+import xyz.tomorrowlearncamp.newsfeed.global.util.JwtUtil;
 
 import java.util.List;
 
@@ -16,13 +18,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FriendController {
     private final FriendService friendService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping
     public ResponseEntity<Void> saveFriend(
             @RequestParam Long userId,
-            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
+            @RequestHeader(JwtProperties.HEADER_STRING) String token
     ) {
-        Long requestUserId = loginUser.getId();
+        Long requestUserId = jwtUtil.extractUserId(token);
         friendService.sendFriendRequest(requestUserId, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -30,18 +33,18 @@ public class FriendController {
     @GetMapping
     public List<UserResponseDto> getFriendRequests(
             @RequestParam String status,
-            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
+            @RequestHeader(JwtProperties.HEADER_STRING) String token
     ) {
-        Long requestUserId = loginUser.getId();
+        Long requestUserId = jwtUtil.extractUserId(token);
         return friendService.getFriendRequest(requestUserId, status);
     }
 
     @DeleteMapping
     public ResponseEntity<Void> deleteFriend(
             @RequestParam Long userId,
-            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
+            @RequestHeader(JwtProperties.HEADER_STRING) String token
     ) {
-        Long requestUserId = loginUser.getId();
+        Long requestUserId = jwtUtil.extractUserId(token);
         friendService.delete(requestUserId, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
