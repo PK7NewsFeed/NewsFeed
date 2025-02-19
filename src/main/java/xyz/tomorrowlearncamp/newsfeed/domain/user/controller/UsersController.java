@@ -15,6 +15,9 @@ import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.response.ReadUsersResponse
 import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.response.UpdateUsersResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.service.UsersService;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
+import xyz.tomorrowlearncamp.newsfeed.global.etc.JwtProperties;
+import xyz.tomorrowlearncamp.newsfeed.global.util.JwtUtil;
+
 import java.util.List;
 
 @RestController
@@ -23,6 +26,7 @@ import java.util.List;
 public class UsersController {
 
     private final UsersService usersService;
+    private final JwtUtil jwtUtil;
 
     // 유저 조회
     @GetMapping("/{userId}")
@@ -35,9 +39,10 @@ public class UsersController {
     // 내 정보 조회
     @GetMapping("/myInfo")
     public ResponseEntity<ReadUsersResponseDto> getMyInfo(
-            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
+            @RequestHeader(JwtProperties.HEADER_STRING) String token
             ) {
-        return new ResponseEntity<>(usersService.getUserById(loginUser.getId()), HttpStatus.OK);
+        Long userId = jwtUtil.extractUserId(token);
+        return new ResponseEntity<>(usersService.getUserById(userId) , HttpStatus.OK);
     }
 
     // 전체 유저 조회
@@ -50,18 +55,20 @@ public class UsersController {
     @PatchMapping
     public ResponseEntity<UpdateUsersResponseDto> updateUser(
             @Validated  @RequestBody UpdateUsersRequestDto dto,
-            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
+            @RequestHeader(JwtProperties.HEADER_STRING) String token
             ) {
-        return new ResponseEntity<>(usersService.updateUser(dto, loginUser.getId()), HttpStatus.OK);
+        Long userId = jwtUtil.extractUserId(token);
+        return new ResponseEntity<>(usersService.updateUser(dto, userId), HttpStatus.OK);
     }
 
     // 비밀번호 수정
     @PatchMapping("/password")
     public ResponseEntity<Void> updatePassword(
             @Validated @RequestBody UpdatePasswordRequestDto dto,
-            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
+            @RequestHeader(JwtProperties.HEADER_STRING) String token
     ) {
-        usersService.updateUserPassword(dto, loginUser.getId());
+        Long userId = jwtUtil.extractUserId(token);
+        usersService.updateUserPassword(dto, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -69,11 +76,12 @@ public class UsersController {
     @DeleteMapping
     public ResponseEntity<Void> deleteUser(
             @Validated @RequestBody DeleteUsersRequestDto dto,
-            @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser,
+            @RequestHeader(JwtProperties.HEADER_STRING) String token,
             HttpServletRequest httpServletRequest
     ) {
+        Long userId = jwtUtil.extractUserId(token);
         // 유저 삭제
-        usersService.deleteUser(dto, loginUser.getId());
+        usersService.deleteUser(dto, userId);
 
         // 세션 삭제
         HttpSession session = httpServletRequest.getSession(false);

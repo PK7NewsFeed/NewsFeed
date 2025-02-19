@@ -19,16 +19,12 @@ public class CommentLikeService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public boolean toggleLike(Long userId, Long commentId) {
+    public void toggleLike(Long userId, Long commentId) {
         Users user = usersRepository.findById(userId)
                 .orElseThrow(NotFoundUserException::new);
         Comment comment = commentRepository.findByIdOrElseThrow(commentId);
 
-        boolean isLiked = commentLikeRepository.existsByCommentAndUser(comment, user);
-
         commentLikeRepository.toggle(comment, user);
-
-        return isLiked;
     }
 
     public int getCountCommentLikes(Long commentId) {

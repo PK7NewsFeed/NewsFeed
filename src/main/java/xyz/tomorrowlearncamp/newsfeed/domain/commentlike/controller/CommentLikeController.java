@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.commentlike.service.CommentLikeService;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
+import xyz.tomorrowlearncamp.newsfeed.global.etc.JwtProperties;
+import xyz.tomorrowlearncamp.newsfeed.global.util.JwtUtil;
 
 @RestController
 @RequestMapping("/comments/{commentsId}/like")
@@ -14,11 +16,13 @@ import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 public class CommentLikeController {
 
     private final CommentLikeService commentLikeService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping
     public ResponseEntity<Void> toggleLike(@PathVariable Long commentsId,
-                                             @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto responseDto) {
-        commentLikeService.toggleLike(responseDto.getId(), commentsId);
+                                           @RequestHeader(JwtProperties.HEADER_STRING) String token) {
+        Long userId = jwtUtil.extractUserId(token);
+        commentLikeService.toggleLike(userId, commentsId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
