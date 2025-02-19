@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.users.controller;
+package xyz.tomorrowlearncamp.newsfeed.domain.user.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -8,14 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.RequestDto.DeleteUsersRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.RequestDto.UpdatePasswordRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.RequestDto.UpdateUsersRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.ResponseDto.ReadUsersResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.ResponseDto.UpdateUsersResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.service.UsersService;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.request.DeleteUsersRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.request.UpdatePasswordRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.request.UpdateUsersRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.response.ReadUsersResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.response.UpdateUsersResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.service.UsersService;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
-
 import java.util.List;
 
 @RestController
@@ -25,6 +24,7 @@ public class UsersController {
 
     private final UsersService usersService;
 
+    // 유저 조회
     @GetMapping("/{userId}")
     public ResponseEntity<ReadUsersResponseDto> getUserById(
             @PathVariable Long userId
@@ -32,6 +32,7 @@ public class UsersController {
         return new ResponseEntity<>(usersService.getUserById(userId), HttpStatus.OK);
     }
 
+    // 내 정보 조회
     @GetMapping("/myInfo")
     public ResponseEntity<ReadUsersResponseDto> getMyInfo(
             @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
@@ -39,11 +40,13 @@ public class UsersController {
         return new ResponseEntity<>(usersService.getUserById(loginUser.getId()), HttpStatus.OK);
     }
 
+    // 전체 유저 조회
     @GetMapping
     public ResponseEntity<List<ReadUsersResponseDto>> getUsers() {
         return new ResponseEntity<>(usersService.getUsers(), HttpStatus.OK);
     }
 
+    // 유저 정보 수정 (비밀번호 제외)
     @PatchMapping
     public ResponseEntity<UpdateUsersResponseDto> updateUser(
             @Validated  @RequestBody UpdateUsersRequestDto dto,
@@ -52,17 +55,19 @@ public class UsersController {
         return new ResponseEntity<>(usersService.updateUser(dto, loginUser.getId()), HttpStatus.OK);
     }
 
+    // 비밀번호 수정
     @PatchMapping("/password")
-    public ResponseEntity<String> updatePassword(
+    public ResponseEntity<Void> updatePassword(
             @Validated @RequestBody UpdatePasswordRequestDto dto,
             @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser
     ) {
         usersService.updateUserPassword(dto, loginUser.getId());
-        return new ResponseEntity<>("Success", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/delete")
-    public ResponseEntity<String> deleteUser(
+    // 유저 삭제
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUser(
             @Validated @RequestBody DeleteUsersRequestDto dto,
             @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto loginUser,
             HttpServletRequest httpServletRequest
@@ -76,6 +81,6 @@ public class UsersController {
             session.invalidate();
         }
 
-        return new ResponseEntity<>("Success", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

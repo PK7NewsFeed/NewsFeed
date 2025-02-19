@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 public class UpdateCommentResponseDto {
@@ -22,11 +23,12 @@ public class UpdateCommentResponseDto {
 
     private final Long parentCommentId;
 
-    private final Timestamp createdAt;
+    private final LocalDateTime createdAt;
 
-    private final Timestamp updatedAt;
+    private final LocalDateTime updatedAt;
+
     @Builder
-    public UpdateCommentResponseDto(Long id, Long userId, Long feedId, String username, String feedname, String content, Long parentCommentId, Timestamp createdAt, Timestamp updatedAt) {
+    public UpdateCommentResponseDto(Long id, Long userId, Long feedId, String username, String feedname, String content, Long parentCommentId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.feedId = feedId;

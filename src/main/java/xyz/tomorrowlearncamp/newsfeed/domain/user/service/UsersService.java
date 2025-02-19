@@ -1,20 +1,17 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.users.service;
+package xyz.tomorrowlearncamp.newsfeed.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.RequestDto.DeleteUsersRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.RequestDto.UpdatePasswordRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.RequestDto.UpdateUsersRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.ResponseDto.ReadUsersResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.dto.ResponseDto.UpdateUsersResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
-import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.request.DeleteUsersRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.request.UpdatePasswordRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.request.UpdateUsersRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.response.ReadUsersResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.dto.response.UpdateUsersResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.repository.UsersRepository;
 import xyz.tomorrowlearncamp.newsfeed.global.config.PasswordEncoder;
-import xyz.tomorrowlearncamp.newsfeed.global.exception.InvalidPasswordException;
-import xyz.tomorrowlearncamp.newsfeed.global.exception.MismatchPasswordException;
-import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
-import xyz.tomorrowlearncamp.newsfeed.global.exception.SameAsCurrentPasswordException;
+import xyz.tomorrowlearncamp.newsfeed.global.exception.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +22,10 @@ public class UsersService {
     private final UsersRepository usersRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    public Users save(Users users) {
+        return usersRepository.save(users);
+    }
 
     public ReadUsersResponseDto getUserById(Long userId) {
         Users users = usersRepository.findById(userId).orElseThrow(NotFoundUserException::new);
@@ -126,4 +127,15 @@ public class UsersService {
             throw new NotFoundUserException();
         }
     }
+
+    public void validateUserEmailExists(String userEmail) {
+        if (usersRepository.existsByEmail(userEmail)) {
+            throw new DuplicateEmailException();
+        }
+    }
+
+    public Users getByEmailOrThrow(String email) {
+        return usersRepository.findByEmail(email).orElseThrow((NotFoundUserException::new));
+    }
+
 }

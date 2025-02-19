@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.users.entity;
+package xyz.tomorrowlearncamp.newsfeed.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -6,9 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLRestriction;
 import xyz.tomorrowlearncamp.newsfeed.global.entity.BaseEntity;
-import xyz.tomorrowlearncamp.newsfeed.global.enums.Gender;
-
-import java.sql.Timestamp;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.enums.Gender;
+import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -34,7 +33,7 @@ public class Users extends BaseEntity {
     private Gender gender;
 
     @Column(nullable = false)
-    private Timestamp birthDate;
+    private LocalDate birthDate;
 
     @Column(nullable = false)
     private boolean deleted = false;
@@ -51,7 +50,7 @@ public class Users extends BaseEntity {
         this.gender = gender;
     }
 
-    public void updateBirthDate(Timestamp birthDate) {
+    public void updateBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -63,7 +62,7 @@ public class Users extends BaseEntity {
         this.deleted = true;
     }
     @Builder
-    public Users(String email, String password, String username, Gender gender, Timestamp birthDate) {
+    public Users(String email, String password, String username, Gender gender, LocalDate birthDate) {
         this.email = email;
         this.password = password;
         this.username = username;

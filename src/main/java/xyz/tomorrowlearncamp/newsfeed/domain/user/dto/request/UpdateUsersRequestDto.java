@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.users.dto.RequestDto;
+package xyz.tomorrowlearncamp.newsfeed.domain.user.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -6,11 +6,13 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import xyz.tomorrowlearncamp.newsfeed.global.enums.Gender;
+import xyz.tomorrowlearncamp.newsfeed.domain.user.enums.Gender;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.ErrorMessage;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -32,6 +34,6 @@ public class UpdateUsersRequestDto {
     private final Gender gender;
 
     @NotNull(message = ErrorMessage.MISSING_BIRTHDATE)
-    private final Timestamp birthDate;
+    private final LocalDate birthDate;
 
 }

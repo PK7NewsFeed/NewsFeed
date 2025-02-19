@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.users.dto.RequestDto;
+package xyz.tomorrowlearncamp.newsfeed.domain.user.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
