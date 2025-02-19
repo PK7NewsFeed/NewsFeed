@@ -1,6 +1,10 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.comment.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,10 +31,12 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ReadCommentResponseDto>> getCommentsByNewsFeedId(@RequestParam Long newsFeedId) {
-        List<ReadCommentResponseDto> dtos = commentService.getCommentsByNewsFeedId(newsFeedId);
+    public ResponseEntity<Page<ReadCommentResponseDto>> getCommentsByNewsFeedId(
+            @RequestParam Long newsFeedId,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable                                                                    ) {
+        Page<ReadCommentResponseDto> responseDtos = commentService.getCommentsByNewsFeedId(newsFeedId, pageable);
 
-        return new ResponseEntity<>(dtos, HttpStatus.OK);
+        return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
 
     @PatchMapping("/{commentId}")

@@ -1,5 +1,7 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.comment.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
@@ -14,5 +16,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     }
 
     @EntityGraph(attributePaths = {"user"})
-    List<Comment> findByNewsFeedId(Long newsFeedId);
+    Page<Comment> findByNewsFeedId(Long newsFeedId, Pageable pageable);
 }

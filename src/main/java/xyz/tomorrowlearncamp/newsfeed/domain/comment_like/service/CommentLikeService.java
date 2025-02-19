@@ -10,6 +10,9 @@ import xyz.tomorrowlearncamp.newsfeed.domain.users.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.users.repository.UsersRepository;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class CommentLikeService {
@@ -28,8 +31,10 @@ public class CommentLikeService {
 
         commentLikeRepository.toggle(comment, user);
 
-        return !isLiked;
+        return isLiked;
     }
 
-
+    public int getCountCommentLikes(Long commentId) {
+        return commentLikeRepository.countCommentLikeByCommentId(commentId);
+    }
 }

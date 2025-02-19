@@ -1,6 +1,5 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.comment.dto;
 
-import lombok.Builder;
 import lombok.Getter;
 import xyz.tomorrowlearncamp.newsfeed.domain.comment.entity.Comment;
 
@@ -23,11 +22,13 @@ public class ReadCommentResponseDto {
 
     private final Long parentCommentId;
 
+    private final int likeCount;
+
     private final Timestamp createdAt;
 
     private final Timestamp updatedAt;
-    @Builder
-    public ReadCommentResponseDto(Long id, Long userId, Long feedId, Long parentCommentId, String username, String feedname, String content, Timestamp createdAt, Timestamp updatedAt) {
+
+    public ReadCommentResponseDto(Long id, Long userId, Long feedId, Long parentCommentId, String username, String feedname, String content, int likeCount, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.userId = userId;
         this.feedId = feedId;
@@ -35,11 +36,12 @@ public class ReadCommentResponseDto {
         this.username = username;
         this.feedname = feedname;
         this.content = content;
+        this.likeCount = likeCount;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public static ReadCommentResponseDto toDto(Comment comment) {
+    public static ReadCommentResponseDto toDto(Comment comment, int likeCount) {
         return new ReadCommentResponseDto(
                 comment.getId(),
                 comment.getUser().getId(),
@@ -48,8 +50,11 @@ public class ReadCommentResponseDto {
                 comment.getUser().getUsername(),
                 comment.getNewsFeed().getTitle(),
                 comment.getContent(),
+                likeCount,
                 comment.getCreatedAt(),
                 comment.getUpdatedAt()
         );
     }
+
+
 }

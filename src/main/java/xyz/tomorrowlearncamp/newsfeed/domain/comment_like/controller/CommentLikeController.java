@@ -17,9 +17,9 @@ public class CommentLikeController {
     private final CommentLikeService commentLikeService;
 
     @PostMapping
-    public ResponseEntity<String> toggleLike(@RequestBody CommentLikeRequestDto requestDto,
+    public ResponseEntity<String> toggleLike(@PathVariable Long commentsId,
                                              @SessionAttribute(name = Const.LOGIN_USER) LoginUserResponseDto responseDto) {
-        boolean isLiked = commentLikeService.toggleLike(responseDto.getId(), requestDto.getCommentId());
+        boolean isLiked = commentLikeService.toggleLike(responseDto.getId(), commentsId);
         return new ResponseEntity<>(isLiked ? "좋아요" : "좋아요 취소", HttpStatus.OK);
     }
 
