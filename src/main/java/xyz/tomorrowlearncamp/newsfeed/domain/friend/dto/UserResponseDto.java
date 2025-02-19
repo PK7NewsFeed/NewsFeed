@@ -1,11 +1,11 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.friend.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class UserResponseDto {
+
     private final Long id;
     private final String username;
     private final String email;

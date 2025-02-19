@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto.CreateNewsFeedRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto.UpdateNewsFeedRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.CreateNewsFeedResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.ReadNewsFeedResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.UpdateNewsFeedResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.request.CreateNewsFeedRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.request.UpdateNewsFeedRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.response.CreateNewsFeedResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.response.ReadNewsFeedResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.response.UpdateNewsFeedResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.enums.SortOrder;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.repository.NewsFeedRepository;
@@ -21,8 +21,6 @@ import xyz.tomorrowlearncamp.newsfeed.global.exception.UnauthorizedWriterExcepti
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

@@ -5,12 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.ReadNewsFeedResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsfeedlike.dto.NewsFeedLikeRequestDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsfeedlike.service.NewsFeedLikeService;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

@@ -8,17 +8,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import xyz.tomorrowlearncamp.newsfeed.auth.dto.LoginUserResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto.CreateNewsFeedRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.requestDto.UpdateNewsFeedRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.CreateNewsFeedResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.ReadNewsFeedResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto.UpdateNewsFeedResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.request.CreateNewsFeedRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.request.UpdateNewsFeedRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.response.CreateNewsFeedResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.response.ReadNewsFeedResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.response.UpdateNewsFeedResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.enums.SortOrder;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.service.NewsFeedService;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.Const;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

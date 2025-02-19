@@ -1,11 +1,9 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.responseDto;
+package xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsFeeds.entity.NewsFeed;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
