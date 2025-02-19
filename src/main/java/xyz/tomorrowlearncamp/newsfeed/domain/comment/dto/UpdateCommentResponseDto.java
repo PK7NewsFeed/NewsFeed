@@ -1,5 +1,7 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.comment.dto;
 
+import jakarta.annotation.Nullable;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.sql.Timestamp;
@@ -24,7 +26,7 @@ public class UpdateCommentResponseDto {
     private final Timestamp createdAt;
 
     private final Timestamp updatedAt;
-
+    @Builder
     public UpdateCommentResponseDto(Long id, Long userId, Long feedId, String username, String feedname, String content, Long parentCommentId, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.userId = userId;
