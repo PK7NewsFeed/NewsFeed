@@ -12,7 +12,8 @@ public enum ErrorCode {
     MISMATCH_PASSWORD("새 비밀번호와 비밀번호 확인이 일치하지 않습니다."),
     SAME_AS_CURRENT_PASSWORD("새 비밀번호는 현재 비밀번호와 같을 수 없습니다."),
     NOT_FOUND_NEWSFEED("없는 뉴스피드 입니다."),
-    UNAUTHORIZED_WRITER("작성자가 아닙니다.")
+    UNAUTHORIZED_WRITER("작성자가 아닙니다."),
+    SELF_LIKE_NOT_ALLOWED("자신이 작성한 글에는 좋아요를 할 수 없습니다.")
     ;
 
     private final String message;

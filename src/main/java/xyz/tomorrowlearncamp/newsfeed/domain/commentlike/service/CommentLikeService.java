@@ -9,6 +9,7 @@ import xyz.tomorrowlearncamp.newsfeed.domain.commentlike.repository.CommentLikeR
 import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.repository.UsersRepository;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
+import xyz.tomorrowlearncamp.newsfeed.global.exception.SelfLikeNotAllowedException;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,9 @@ public class CommentLikeService {
         Users user = usersRepository.findById(userId)
                 .orElseThrow(NotFoundUserException::new);
         Comment comment = commentRepository.findByIdOrElseThrow(commentId);
+        if (!comment.getUser().equals(user)) {
+            throw new SelfLikeNotAllowedException();
+        }
 
         commentLikeRepository.toggle(comment, user);
     }
