@@ -11,7 +11,7 @@ public interface AuthService {
 
     LoginUserResponseDto login(String email, String password);
 
-//    String jwtLogin(String email, String password);
+    String jwtLogin(String email, String password);
 
     boolean existsByEmail(String email);
 

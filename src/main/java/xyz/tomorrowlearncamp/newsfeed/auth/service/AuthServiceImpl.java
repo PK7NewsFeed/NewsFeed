@@ -21,16 +21,18 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final UsersService usersService;
+    private final UsersRepository usersRepository;
 
     private final PasswordEncoder passwordEncoder;
 
-//    private final JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
     @Override
     public SignUpUserResponseDto signUp(String email, String password, String username, Gender gender, LocalDate birthDate) {
         // 이메일 중복 검사
-        usersService.validateUserEmailExists(email);
+        if (!usersRepository.existsByEmail(email)) {
+            throw new DuplicateEmailException();
+        }
 
         // 암호화
         String encodedPassword = passwordEncoder.encode(password);
@@ -44,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
                 .birthDate(birthDate)
                 .build();
 
-        Users savedUser = usersService.save(users);
+        Users savedUser = usersRepository.save(users);
 
         return SignUpUserResponseDto.builder()
                 .id(savedUser.getId())
@@ -57,8 +59,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginUserResponseDto login(String email, String password) {
 
+        Users findUser = usersRepository.findByEmail(email).orElseThrow(
+                NotFoundUserException::new
+        );
 
-        Users findUser = usersService.getByEmailOrThrow(email);
 
         if (!passwordEncoder.matches(password, findUser.getPassword())) { // 비밀번호가 다른 경우
             throw new InvalidPasswordOrEmailException();
@@ -70,23 +74,22 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
-//    @Override
-//    public String jwtLogin(String email, String password) {
-//        if (!usersRepository.existsByEmail(email)) { // 없는 사용자
-//            throw new NotFoundUserException();
-//        }
-//
-//        Users findUser = usersRepository.findByEmail(email);
-//
-//        if (!passwordEncoder.matches(password, findUser.getPassword())) { // 비밀번호가 다른 경우
-//            throw new InvalidPasswordOrEmailException();
-//        }
-//
-//        // xh
-//        String token = jwtUtil.generateToken(findUser.getId(), findUser.getEmail());
-//
-//        return token;
-//    }
+    @Override
+    public String jwtLogin(String email, String password) {
+
+        Users findUser = usersRepository.findByEmail(email).orElseThrow(
+                NotFoundUserException::new
+        );
+
+        if (!passwordEncoder.matches(password, findUser.getPassword())) { // 비밀번호가 다른 경우
+            throw new InvalidPasswordOrEmailException();
+        }
+
+        // xh
+        String token = jwtUtil.generateToken(findUser.getId(), findUser.getEmail());
+
+        return token;
+    }
 
     @Override
     public boolean existsByEmail(String email) {
