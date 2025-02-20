@@ -42,7 +42,7 @@ public class FriendController {
             @RequestHeader(JwtProperties.HEADER_STRING) String token
     ) {
         Long requestUserId = jwtUtil.extractUserId(token);
-        friendService.delete(requestUserId, userId);
+        friendService.deleteFriend(requestUserId, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

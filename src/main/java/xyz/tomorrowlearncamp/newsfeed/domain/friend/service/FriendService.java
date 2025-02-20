@@ -75,7 +75,7 @@ public class FriendService {
                 .toList();
     }
 
-    public void delete(Long requestUserId, Long userId) {
+    public void deleteFriend(Long requestUserId, Long userId) {
         Friend friend = friendRepository.findFriendship(requestUserId, userId, FriendRequestStatus.ACCEPTED).orElseThrow(NotFoundUserException::new);
 
         friendRepository.delete(friend);

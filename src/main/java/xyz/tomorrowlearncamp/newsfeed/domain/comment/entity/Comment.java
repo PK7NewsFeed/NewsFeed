@@ -11,6 +11,7 @@ import xyz.tomorrowlearncamp.newsfeed.global.entity.BaseEntity;
 
 @Getter
 @Entity
+@NoArgsConstructor
 @Table(name = "comment")
 public class Comment extends BaseEntity {
 
