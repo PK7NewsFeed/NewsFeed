@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class LoginUserResponseDto {
 
-    private Long id;
+    private final Long id;
 
-    private String username;
+    private final String username;
 
     @Builder
     public LoginUserResponseDto(Long id, String username) {

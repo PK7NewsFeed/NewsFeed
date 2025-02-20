@@ -36,20 +36,6 @@ public class AuthController {
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout(
-            HttpServletRequest httpServletRequest
-    ) {
-        // 기존 세션 확인
-        HttpSession session = httpServletRequest.getSession(false);
-
-        if (session != null) { // 세션이 있다면
-            session.invalidate(); // 세션 삭제
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @PostMapping("/jwt/login")
     public ResponseEntity<Void> jwtLogin(
             @Validated @RequestBody LoginUserRequestDto requestDto

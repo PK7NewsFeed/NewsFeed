@@ -23,10 +23,12 @@ public class CommentController {
     private final JwtUtil jwtUtil;
 
     @PostMapping
-    public ResponseEntity<CreateCommentResponseDto> save(@Validated @RequestBody CreateCommentRequestDto requestDto,
-                                                         @RequestHeader(JwtProperties.HEADER_STRING) String token) {
+    public ResponseEntity<CreateCommentResponseDto> saveComment(
+            @Validated @RequestBody CreateCommentRequestDto requestDto,
+            @RequestHeader(JwtProperties.HEADER_STRING) String token
+    ) {
         Long userId = jwtUtil.extractUserId(token);
-        CreateCommentResponseDto responseDto = commentService.save(requestDto, userId);
+        CreateCommentResponseDto responseDto = commentService.saveComment(requestDto, userId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -40,19 +42,23 @@ public class CommentController {
     }
 
     @PatchMapping("/{commentId}")
-    public ResponseEntity<UpdateCommentResponseDto> update(@PathVariable Long commentId,
-                                                           @Validated @RequestBody UpdateCommentRequestDto requestDto,
-                                                           @RequestHeader(JwtProperties.HEADER_STRING) String token) {
+    public ResponseEntity<UpdateCommentResponseDto> updateComment(
+            @PathVariable Long commentId,
+            @Validated @RequestBody UpdateCommentRequestDto requestDto,
+            @RequestHeader(JwtProperties.HEADER_STRING) String token
+    ) {
         Long userId = jwtUtil.extractUserId(token);
-        UpdateCommentResponseDto responseDto = commentService.update(commentId, requestDto.getContent(), userId);
+        UpdateCommentResponseDto responseDto = commentService.updateComment(commentId, requestDto.getContent(), userId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<Void> delete(@PathVariable Long commentId,
-                                       @RequestHeader(JwtProperties.HEADER_STRING) String token) {
+    public ResponseEntity<Void> deleteComment(
+            @PathVariable Long commentId,
+            @RequestHeader(JwtProperties.HEADER_STRING) String token
+    ) {
         Long userId = jwtUtil.extractUserId(token);
-        commentService.delete(commentId, userId);
+        commentService.deleteComment(commentId, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

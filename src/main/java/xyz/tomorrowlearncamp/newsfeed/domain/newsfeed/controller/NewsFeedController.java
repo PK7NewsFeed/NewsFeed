@@ -7,11 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.requestDto.CreateNewsFeedRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.requestDto.UpdateNewsFeedRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.responseDto.CreateNewsFeedResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.responseDto.ReadNewsFeedResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.responseDto.UpdateNewsFeedResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.request.CreateNewsFeedRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.request.UpdateNewsFeedRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.response.CreateNewsFeedResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.response.ReadNewsFeedResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.response.UpdateNewsFeedResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.enums.SortOrder;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.service.NewsFeedService;
 import xyz.tomorrowlearncamp.newsfeed.global.etc.JwtProperties;
@@ -29,12 +29,12 @@ public class NewsFeedController {
     private final JwtUtil jwtUtil;
 
     @PostMapping
-    public ResponseEntity<CreateNewsFeedResponseDto> save(
+    public ResponseEntity<CreateNewsFeedResponseDto> saveNewsFeed(
             @Validated @RequestBody CreateNewsFeedRequestDto requestDto,
             @RequestHeader(JwtProperties.HEADER_STRING) String token
             ) {
         Long userId = jwtUtil.extractUserId(token);
-        return new ResponseEntity<>(newsFeedService.save(requestDto, userId), HttpStatus.CREATED);
+        return new ResponseEntity<>(newsFeedService.saveNewsFeed(requestDto, userId), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -48,27 +48,27 @@ public class NewsFeedController {
         return new ResponseEntity<>(newsFeedService.getNewsFeeds(page, size, sortOrder, startDate, endDate), HttpStatus.OK);
     }
 
-    @GetMapping("/{newsfeedId}")
+    @GetMapping("/{newsFeedId}")
     public ResponseEntity<ReadNewsFeedResponseDto> getNewsFeedById(@PathVariable Long newsFeedId) {
         return new ResponseEntity<>(newsFeedService.getNewsFeedDtoById(newsFeedId), HttpStatus.OK);
     }
 
-    @PatchMapping("/{newsfeedId}")
+    @PatchMapping("/{newsFeedId}")
     public ResponseEntity<UpdateNewsFeedResponseDto> updateNewsFeed(
             @PathVariable Long newsFeedId,
             @Validated @RequestBody UpdateNewsFeedRequestDto requestDto,
             @RequestHeader(JwtProperties.HEADER_STRING) String token
     ) {
         Long userId = jwtUtil.extractUserId(token);
-        return new ResponseEntity<>(newsFeedService.update(newsFeedId, requestDto, userId), HttpStatus.OK);
+        return new ResponseEntity<>(newsFeedService.updateNewsFeed(newsFeedId, requestDto, userId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{newsfeedId}")
-    public void delete(
+    @DeleteMapping("/{newsFeedId}")
+    public void deleteNewsFeed(
             @PathVariable Long newsFeedId,
             @RequestHeader(JwtProperties.HEADER_STRING) String token
     ) {
         Long userId = jwtUtil.extractUserId(token);
-        newsFeedService.deleteById(newsFeedId, userId);
+        newsFeedService.deleteNewsFeed(newsFeedId, userId);
     }
 }

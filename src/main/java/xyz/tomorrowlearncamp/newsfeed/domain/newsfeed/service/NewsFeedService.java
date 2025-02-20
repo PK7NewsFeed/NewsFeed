@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.requestDto.CreateNewsFeedRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.requestDto.UpdateNewsFeedRequestDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.responseDto.CreateNewsFeedResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.responseDto.ReadNewsFeedResponseDto;
-import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.responseDto.UpdateNewsFeedResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.request.CreateNewsFeedRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.request.UpdateNewsFeedRequestDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.response.CreateNewsFeedResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.response.ReadNewsFeedResponseDto;
+import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.response.UpdateNewsFeedResponseDto;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.entity.NewsFeed;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.enums.SortOrder;
 import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.repository.NewsFeedRepository;
@@ -20,8 +20,6 @@ import xyz.tomorrowlearncamp.newsfeed.global.exception.UnauthorizedWriterExcepti
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +30,7 @@ public class NewsFeedService {
     private final NewsFeedLikeService newsFeedLikeService;
 
     @Transactional
-    public CreateNewsFeedResponseDto save(CreateNewsFeedRequestDto requestDto, Long userId) {
+    public CreateNewsFeedResponseDto saveNewsFeed(CreateNewsFeedRequestDto requestDto, Long userId) {
         Users user = usersService.getUserEntityById(userId);
         NewsFeed newsFeed = newsFeedRepository.save(
                 NewsFeed.builder()
@@ -80,10 +78,10 @@ public class NewsFeedService {
     }
 
     @Transactional
-    public UpdateNewsFeedResponseDto update(Long newsfeedId, UpdateNewsFeedRequestDto requestDto, Long userId) {
+    public UpdateNewsFeedResponseDto updateNewsFeed(Long newsfeedId, UpdateNewsFeedRequestDto requestDto, Long userId) {
         NewsFeed newsFeed = newsFeedRepository.findById(newsfeedId).orElseThrow(NotFoundNewsFeedException::new);
 
-        if (newsFeed.getUser().getId() != userId) {
+        if (newsFeed.getUser().getId().equals(userId)) {
             throw new UnauthorizedWriterException();
         }
 
@@ -101,10 +99,10 @@ public class NewsFeedService {
     }
 
     @Transactional
-    public void deleteById(Long newsfeedId, Long userId) {
+    public void deleteNewsFeed(Long newsfeedId, Long userId) {
         NewsFeed newsFeed = newsFeedRepository.findById(newsfeedId).orElseThrow(NotFoundNewsFeedException::new);
 
-        if (newsFeed.getUser().getId() != userId) {
+        if (!newsFeed.getUser().getId().equals(userId)) {
             throw new UnauthorizedWriterException();
         }
 

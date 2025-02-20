@@ -51,7 +51,7 @@ public class ReadCommentResponseDto {
                 .createdAt(comment.getCreatedAt())
                 .feedId(comment.getNewsFeed().getId())
                 .feedname(comment.getNewsFeed().getTitle())
-                .parentCommentId(comment.getParentComment().getId())
+                .parentCommentId(comment.getParentComment() != null ? comment.getParentComment().getId() : null)
                 .userId(comment.getUser().getId())
                 .username(comment.getUser().getUsername())
                 .likeCount(likeCount)
