@@ -37,6 +37,9 @@ public class Comment extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private boolean deleted = false;
+
     @Builder
     public Comment(Users user, NewsFeed newsFeed, @Nullable Comment parentComment, String content, Integer depth) {
         this.user = user;
@@ -50,4 +53,7 @@ public class Comment extends BaseEntity {
         this.content = newContent;
     }
 
+    public void delete() {
+        this.deleted = true;
+    }
 }
