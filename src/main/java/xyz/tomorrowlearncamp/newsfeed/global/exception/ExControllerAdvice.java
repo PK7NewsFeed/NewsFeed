@@ -59,6 +59,11 @@ public class ExControllerAdvice {
         return new ResponseEntity<>(new ErrorMessage(ErrorCode.UNAUTHORIZED_WRITER, e.getStatusCode()), e.getStatusCode());
     }
 
+    @ExceptionHandler(SelfLikeNotAllowedException.class)
+    public ResponseEntity<ErrorMessage> SelfLikeNotAllowedExHandle(SelfLikeNotAllowedException e) {
+        return new ResponseEntity<>(new ErrorMessage(ErrorCode.SELF_LIKE_NOT_ALLOWED, e.getStatusCode()), e.getStatusCode());
+    }
+
     // @Validated 에러 출력
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> globalValidatedExHandle(MethodArgumentNotValidException e) {
