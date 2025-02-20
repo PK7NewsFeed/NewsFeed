@@ -20,8 +20,6 @@ import xyz.tomorrowlearncamp.newsfeed.global.exception.LoginUserException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundCommentException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.UnauthorizedWriterException;
 
-import java.util.Optional;
-
 
 @Service
 @RequiredArgsConstructor
@@ -82,6 +80,11 @@ public class CommentService {
     @Transactional
     public UpdateCommentResponseDto updateComment(Long commentId, String newContent, Long userId) {
         Comment comment = commentRepository.findByIdOrElseThrow(commentId);
+
+        if (comment.isDeleted()) {
+            throw new NotFoundCommentException();
+        }
+
         // 세션 userId와 수정하려는 댓글의 userId 비교
         if (!userId.equals(comment.getUser().getId())) {
             throw new LoginUserException();
@@ -110,6 +113,8 @@ public class CommentService {
         if (!userId.equals(comment.getUser().getId()) || !userId.equals(comment.getNewsFeed().getUser().getId())) {
             throw new UnauthorizedWriterException();
         }
-        commentRepository.delete(comment);
+        comment.delete();
+        comment.updateContent("삭제된 댓글입니다.");
+
     }
 }
