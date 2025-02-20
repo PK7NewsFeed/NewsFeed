@@ -69,6 +69,9 @@ public class UsersService {
             users.updateUserName(dto.getUsername());
         }
         if (dto.getEmail() != null && !dto.getEmail().isBlank()) {
+            if (usersRepository.existsByEmail(dto.getEmail())) {
+                throw new DuplicateEmailException();
+            }
             users.updateEmail(dto.getEmail());
         }
         if (dto.getGender() != null) {

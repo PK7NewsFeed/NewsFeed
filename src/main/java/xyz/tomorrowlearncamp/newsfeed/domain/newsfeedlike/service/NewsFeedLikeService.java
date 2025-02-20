@@ -9,8 +9,10 @@ import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.repository.NewsFeedReposit
 import xyz.tomorrowlearncamp.newsfeed.domain.newsfeedlike.repository.NewsFeedLikeRepository;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.repository.UsersRepository;
+import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundCommentException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundNewsFeedException;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundUserException;
+import xyz.tomorrowlearncamp.newsfeed.global.exception.SelfLikeNotAllowedException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +30,10 @@ public class NewsFeedLikeService {
         Users user = usersRepository.findById(userId).orElseThrow(NotFoundUserException::new);
 
         NewsFeed newsFeed = newsFeedRepository.findById(newsFeedId).orElseThrow(NotFoundNewsFeedException::new);
+
+        if (user.getId().equals(newsFeed.getUser().getId())) {
+            throw new SelfLikeNotAllowedException();
+        }
 
         newsFeedLikeRepository.toggle(newsFeed, user);
     }

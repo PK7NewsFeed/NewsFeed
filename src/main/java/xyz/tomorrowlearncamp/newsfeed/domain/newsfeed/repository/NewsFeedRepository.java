@@ -10,7 +10,7 @@ import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.entity.NewsFeed;
 import java.time.LocalDateTime;
 
 public interface NewsFeedRepository extends JpaRepository<NewsFeed,Long> {
-    @Query("SELECT nf, COUNT(nfl) as likeCount " +
+    @Query("SELECT nf, COUNT(nfl) as likes " +
             "FROM NewsFeed nf " +
             "LEFT JOIN NewsFeedLike nfl ON nf.id = nfl.newsFeed.id " +
             "WHERE nf.deleted = false " +
