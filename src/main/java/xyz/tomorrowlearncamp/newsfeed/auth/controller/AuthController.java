@@ -1,8 +1,6 @@
 package xyz.tomorrowlearncamp.newsfeed.auth.controller;
 
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -34,20 +32,6 @@ public class AuthController {
                 requestDto.getBirthDate()
         );
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout(
-            HttpServletRequest httpServletRequest
-    ) {
-        // 기존 세션 확인
-        HttpSession session = httpServletRequest.getSession(false);
-
-        if (session != null) { // 세션이 있다면
-            session.invalidate(); // 세션 삭제
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/jwt/login")

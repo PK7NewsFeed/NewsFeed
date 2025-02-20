@@ -35,12 +35,12 @@ public class ExControllerAdvice {
     }
 
     @ExceptionHandler(InvalidPasswordException.class)
-    public ResponseEntity<ErrorMessage> invalidPasswordExHandleExhandle(InvalidPasswordException e) {
+    public ResponseEntity<ErrorMessage> invalidPasswordExHandleExHandle(InvalidPasswordException e) {
         return new ResponseEntity<>(new ErrorMessage(ErrorCode.INVALID_PASSWORD, e.getStatusCode()), e.getStatusCode());
     }
 
     @ExceptionHandler(MismatchPasswordException.class)
-    public ResponseEntity<ErrorMessage> mismatchPaswwordException(MismatchPasswordException e) {
+    public ResponseEntity<ErrorMessage> mismatchPasswordException(MismatchPasswordException e) {
         return new ResponseEntity<>(new ErrorMessage(ErrorCode.MISMATCH_PASSWORD, e.getStatusCode()), e.getStatusCode());
     }
 
@@ -57,6 +57,11 @@ public class ExControllerAdvice {
     @ExceptionHandler(UnauthorizedWriterException.class)
     public ResponseEntity<ErrorMessage> unauthorizedWriter(UnauthorizedWriterException e) {
         return new ResponseEntity<>(new ErrorMessage(ErrorCode.UNAUTHORIZED_WRITER, e.getStatusCode()), e.getStatusCode());
+    }
+
+    @ExceptionHandler(SelfLikeNotAllowedException.class)
+    public ResponseEntity<ErrorMessage> SelfLikeNotAllowedExHandle(SelfLikeNotAllowedException e) {
+        return new ResponseEntity<>(new ErrorMessage(ErrorCode.SELF_LIKE_NOT_ALLOWED, e.getStatusCode()), e.getStatusCode());
     }
 
     // @Validated 에러 출력
