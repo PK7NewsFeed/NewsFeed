@@ -33,6 +33,7 @@ public class CommentLikeService {
             throw new NotFoundCommentException();
         }
 
+
         commentLikeRepository.toggle(comment, user);
     }
 
