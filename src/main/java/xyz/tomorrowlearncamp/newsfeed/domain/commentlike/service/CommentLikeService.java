@@ -24,7 +24,7 @@ public class CommentLikeService {
         Users user = usersRepository.findById(userId)
                 .orElseThrow(NotFoundUserException::new);
         Comment comment = commentRepository.findByIdOrElseThrow(commentId);
-        if (!comment.getUser().equals(user)) {
+        if (comment.getUser().equals(user)) {
             throw new SelfLikeNotAllowedException();
         }
 
