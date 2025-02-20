@@ -102,7 +102,7 @@ public class NewsFeedService {
     public void deleteNewsFeed(Long newsfeedId, Long userId) {
         NewsFeed newsFeed = newsFeedRepository.findById(newsfeedId).orElseThrow(NotFoundNewsFeedException::new);
 
-        if (newsFeed.getUser().getId() != userId) {
+        if (!newsFeed.getUser().getId().equals(userId)) {
             throw new UnauthorizedWriterException();
         }
 
