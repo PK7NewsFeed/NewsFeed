@@ -1,27 +1,27 @@
 # Introduce PRIMARY KEY 7
 ## 개발자 소개
 - 팀장 : 이은성
-  - 프로젝트 후기 :
+  - 프로젝트 후기 : 팀원이 너무 잘해줘서 방향만 잡아줘도 앞으로 진행이 되는 마법을 겪었습니다.
   - 맡은 역할 : 공통 예외 처리, 인증/인가, 로그인 필터, 발표/발표자료 준비
   - 블로그 : https://strnetwork.tistory.com/
   - Github : https://github.com/mixedsider
 - 팀원 : 전승민
-  - 프로젝트 후기 :
+  - 프로젝트 후기 : 좋은 팀원, 멋진 프로젝트. 한잔해
   - 맡은 역할 : 댓글 CRUD , 댓글 좋아요 기능
   - 블로그 : velog.io/@seung103/
   - Github : https://github.com/Seungmin-J
 - 팀원 : 유은호
-  - 프로젝트 후기 :
+  - 프로젝트 후기 : 팀 프로젝트가 너무나도 재미있는줄 처음 알았습니다.
   - 맡은 역할 : 친구 신청, 친구 신청 목록 관리
   - 블로그 : https://velog.io/@mapleclover/
   - Github : https://github.com/mapleclover
 - 팀원 : 윤현호
-  - 프로젝트 후기 :
+  - 프로젝트 후기 : 좋은 팀원들과 함께하며 즐거운 시간을 보냈고, 많은 것을 배우는 프로젝트였습니다!
   - 맡은 역할 : 사용자 CRUD
   - 블로그 : https://seaking110.tistory.com/
   - Github : https://github.com/seaking110
 - 팀원 : 전영환
-  - 프로젝트 후기 :
+  - 프로젝트 후기 : 많은 깨우침과 자극을 받은 프로젝트였습니다.
   - 맡은 역할 : 게시글(피드) CRUD
   - 블로그 : https://velog.io/@younghwan314/
   - Github : https://github.com/younghwan314
