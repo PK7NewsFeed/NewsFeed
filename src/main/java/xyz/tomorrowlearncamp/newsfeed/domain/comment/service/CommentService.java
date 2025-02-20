@@ -17,6 +17,8 @@ import xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.service.NewsFeedService;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.entity.Users;
 import xyz.tomorrowlearncamp.newsfeed.domain.user.service.UsersService;
 import xyz.tomorrowlearncamp.newsfeed.global.exception.LoginUserException;
+import xyz.tomorrowlearncamp.newsfeed.global.exception.NotFoundCommentException;
+import xyz.tomorrowlearncamp.newsfeed.global.exception.UnauthorizedWriterException;
 
 
 @Service
@@ -79,7 +81,7 @@ public class CommentService {
     public UpdateCommentResponseDto updateComment(Long commentId, String newContent, Long userId) {
         Comment comment = commentRepository.findByIdOrElseThrow(commentId);
         // 세션 userId와 수정하려는 댓글의 userId 비교
-        if (!userId.equals(comment.getUser().getId()) || !userId.equals(comment.getNewsFeed().getUser().getId())) {
+        if (!userId.equals(comment.getUser().getId())) {
             throw new LoginUserException();
         }
 
@@ -102,9 +104,9 @@ public class CommentService {
     @Transactional
     public void deleteComment(Long commentId, Long userId) {
         Comment comment = commentRepository.findByIdOrElseThrow(commentId);
-        // 세션 userId와 삭제하려는 댓글의 userId 또는 피드의 userId와 비교
+        // 세션 userId와 삭제하려는 댓글의 userId 비교
         if (!userId.equals(comment.getUser().getId()) || !userId.equals(comment.getNewsFeed().getUser().getId())) {
-            throw new LoginUserException();
+            throw new UnauthorizedWriterException();
         }
         commentRepository.delete(comment);
     }
