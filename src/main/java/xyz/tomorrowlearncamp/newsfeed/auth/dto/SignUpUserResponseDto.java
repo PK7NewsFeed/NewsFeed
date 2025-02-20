@@ -7,13 +7,13 @@ import java.time.LocalDateTime;
 @Getter
 public class SignUpUserResponseDto {
 
-    private Long id;
+    private final Long id;
 
-    private String email;
+    private final String email;
 
-    private String username;
+    private final String username;
 
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
     @Builder
     public SignUpUserResponseDto(Long id, String email, String username, LocalDateTime createdAt) {

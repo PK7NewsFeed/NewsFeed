@@ -31,7 +31,7 @@ public class CommentService {
     private final UsersService usersService;
 
 
-    public CreateCommentResponseDto save(CreateCommentRequestDto requestDto, Long userId) {
+    public CreateCommentResponseDto saveComment(CreateCommentRequestDto requestDto, Long userId) {
         int depth = 0;
 
         Users user = usersService.getUserEntityById(userId);
@@ -78,7 +78,7 @@ public class CommentService {
     }
 
     @Transactional
-    public UpdateCommentResponseDto update(Long commentId, String newContent, Long userId) {
+    public UpdateCommentResponseDto updateComment(Long commentId, String newContent, Long userId) {
         Comment comment = commentRepository.findByIdOrElseThrow(commentId);
 
         if (comment.isDeleted()) {
@@ -107,7 +107,7 @@ public class CommentService {
     }
 
     @Transactional
-    public void delete(Long commentId, Long userId) {
+    public void deleteComment(Long commentId, Long userId) {
         Comment comment = commentRepository.findByIdOrElseThrow(commentId);
         // 세션 userId와 삭제하려는 댓글의 userId 비교
         if (!userId.equals(comment.getUser().getId())) {

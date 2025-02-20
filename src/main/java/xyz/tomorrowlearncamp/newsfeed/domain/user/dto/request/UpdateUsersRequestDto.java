@@ -17,7 +17,6 @@ import java.time.LocalDate;
 public class UpdateUsersRequestDto {
     private final String username;
 
-    @NotNull(message = DtoErrorMessage.EMPTY_CONTENT)
     @Pattern(regexp = Const.EMAIL_REGEX, message = DtoErrorMessage.INVALID_EMAIL_FORMAT)
     @Email(message = DtoErrorMessage.INVALID_EMAIL_FORMAT)
     @Size(min = 10, max = 30, message = DtoErrorMessage.INVALID_EMAIL_LENGTH)
@@ -28,10 +27,8 @@ public class UpdateUsersRequestDto {
     @Pattern(regexp = Const.PASSWORD_REGEX, message = DtoErrorMessage.INVALID_PASSWORD_FORMAT)
     private final String password;
 
-    @NotNull(message = DtoErrorMessage.MISSING_GENDER)
     private final Gender gender;
 
-    @NotNull(message = DtoErrorMessage.MISSING_BIRTHDATE)
     private final LocalDate birthDate;
 
 }

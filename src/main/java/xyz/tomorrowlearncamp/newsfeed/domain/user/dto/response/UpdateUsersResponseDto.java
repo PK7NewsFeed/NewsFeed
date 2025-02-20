@@ -8,19 +8,19 @@ import java.time.LocalDateTime;
 
 @Getter
 public class UpdateUsersResponseDto {
-    private Long id;
+    private final Long id;
 
-    private String username;
+    private final String username;
 
-    private String email;
+    private final String email;
 
-    private Gender gender;
+    private final Gender gender;
 
-    private LocalDate birthDate;
+    private final LocalDate birthDate;
 
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
+    private final LocalDateTime updatedAt;
 
     @Builder()
     public UpdateUsersResponseDto(Long id, String email, String username, Gender gender, LocalDate birthDate, LocalDateTime createdAt, LocalDateTime updatedAt){

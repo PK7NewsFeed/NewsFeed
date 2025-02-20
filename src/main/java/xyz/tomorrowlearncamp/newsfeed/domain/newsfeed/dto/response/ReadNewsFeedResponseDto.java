@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.responseDto;
+package xyz.tomorrowlearncamp.newsfeed.domain.newsfeed.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
