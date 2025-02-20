@@ -1,6 +1,5 @@
 package xyz.tomorrowlearncamp.newsfeed.domain.user.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,8 +71,7 @@ public class UsersController {
     @DeleteMapping
     public ResponseEntity<Void> deleteUser(
             @Validated @RequestBody DeleteUsersRequestDto dto,
-            @RequestHeader(JwtProperties.HEADER_STRING) String token,
-            HttpServletRequest httpServletRequest
+            @RequestHeader(JwtProperties.HEADER_STRING) String token
     ) {
         Long userId = jwtUtil.extractUserId(token);
         // 유저 삭제

@@ -1,8 +1,6 @@
 package xyz.tomorrowlearncamp.newsfeed.auth.controller;
 
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
