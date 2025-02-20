@@ -29,6 +29,7 @@ public class NewsFeedLikeService {
 
         NewsFeed newsFeed = newsFeedRepository.findById(newsFeedId).orElseThrow(NotFoundNewsFeedException::new);
 
+
         newsFeedLikeRepository.toggle(newsFeed, user);
     }
 

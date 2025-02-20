@@ -35,12 +35,12 @@ public class ExControllerAdvice {
     }
 
     @ExceptionHandler(InvalidPasswordException.class)
-    public ResponseEntity<ErrorMessage> invalidPasswordExHandleExhandle(InvalidPasswordException e) {
+    public ResponseEntity<ErrorMessage> invalidPasswordExHandleExHandle(InvalidPasswordException e) {
         return new ResponseEntity<>(new ErrorMessage(ErrorCode.INVALID_PASSWORD, e.getStatusCode()), e.getStatusCode());
     }
 
     @ExceptionHandler(MismatchPasswordException.class)
-    public ResponseEntity<ErrorMessage> mismatchPaswwordException(MismatchPasswordException e) {
+    public ResponseEntity<ErrorMessage> mismatchPasswordException(MismatchPasswordException e) {
         return new ResponseEntity<>(new ErrorMessage(ErrorCode.MISMATCH_PASSWORD, e.getStatusCode()), e.getStatusCode());
     }
 
